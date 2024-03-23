@@ -16,6 +16,7 @@ public static class InfrastructureExtensions
     {
         // Adding Infrastructure services
         service.AddScoped<IUserSecurityService, UserSecurityService>();
+        service.AddScoped<IJwtTokenService, JwtTokenService>();
 
         // Adding Repositories
         service.AddScoped<IUnitOfWork, UnitOfWork>();

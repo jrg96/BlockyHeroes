@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning.Builder;
 using Asp.Versioning;
 using Carter;
+using BlockyHeroesBackend.Application.Services;
 
 namespace BlockyHeroesBackend.Api.Modules;
 
@@ -27,8 +28,17 @@ public class UserModule : ICarterModule
             .WithApiVersionSet(versionSet);
     }
 
-    private async Task<IResult> CreateUser()
+    private async Task<IResult> CreateUser(IJwtTokenService jwtTokenService)
     {
+        var testDict = new Dictionary<string, string>() 
+        {
+            { "Username", "TestValue" }
+        };
+
+        var token = jwtTokenService.GenerateToken(testDict);
+
+        var test = jwtTokenService.DecodeToken(token);
+
         return TypedResults.Ok("Hello World");
     }
 }
