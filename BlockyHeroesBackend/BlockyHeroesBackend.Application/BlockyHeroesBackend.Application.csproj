@@ -15,4 +15,10 @@
     <ProjectReference Include="..\BlockyHeroesBackend.Domain\BlockyHeroesBackend.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\User\QueryHandlers\" />
+    <Folder Include="Entities\User\Queries\" />
+    <Folder Include="Behaviors\" />
+  </ItemGroup>
+
 </Project>
