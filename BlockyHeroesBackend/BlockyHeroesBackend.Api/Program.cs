@@ -1,6 +1,7 @@
 using BlockyHeroesBackend.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using BlockyHeroesBackend.Infrastructure.Extensions;
+using BlockyHeroesBackend.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen();
 
 // Adding custom extensions
 builder.Services.AddInfrastructure();
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
