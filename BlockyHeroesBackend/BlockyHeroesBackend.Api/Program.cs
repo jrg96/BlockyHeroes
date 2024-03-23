@@ -1,4 +1,12 @@
+using BlockyHeroesBackend.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Adding DbContext
+builder.Services.AddDbContext<BlockyHeroesDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BlockyHeroesDb")));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
