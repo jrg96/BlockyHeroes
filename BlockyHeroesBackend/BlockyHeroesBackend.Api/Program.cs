@@ -1,5 +1,6 @@
 using BlockyHeroesBackend.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using BlockyHeroesBackend.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddDbContext<BlockyHeroesDbContext>(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Adding custom extensions
+builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 
