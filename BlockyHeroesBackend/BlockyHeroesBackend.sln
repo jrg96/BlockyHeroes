@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlockyHeroesBackend.Present
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockyHeroesBackend.Api", "BlockyHeroesBackend.Api\BlockyHeroesBackend.Api.csproj", "{62C6D802-BCA7-442B-BA2C-E624B596D40A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockyHeroesBackend.Domain.Common", "BlockyHeroesBackend.Domain.Common\BlockyHeroesBackend.Domain.Common.csproj", "{2C8C806D-1C31-4C76-93A1-9832553BED81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{62C6D802-BCA7-442B-BA2C-E624B596D40A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62C6D802-BCA7-442B-BA2C-E624B596D40A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62C6D802-BCA7-442B-BA2C-E624B596D40A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C8C806D-1C31-4C76-93A1-9832553BED81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C8C806D-1C31-4C76-93A1-9832553BED81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C8C806D-1C31-4C76-93A1-9832553BED81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C8C806D-1C31-4C76-93A1-9832553BED81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

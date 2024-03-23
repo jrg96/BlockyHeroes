@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BlockyHeroesBackend.Domain.Common\BlockyHeroesBackend.Domain.Common.csproj" />
-  </ItemGroup>
-
 </Project>
