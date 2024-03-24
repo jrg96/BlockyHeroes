@@ -47,6 +47,8 @@ builder.Services.AddApplication();
 builder.Services.AddCustomAuthentication();
 
 var app = builder.Build();
+app.AddCustomExceptionMiddleware();
+app.AddJwtValidationMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -70,6 +72,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapCarter();
-app.AddJwtValidationMiddleware();
 
 app.Run();

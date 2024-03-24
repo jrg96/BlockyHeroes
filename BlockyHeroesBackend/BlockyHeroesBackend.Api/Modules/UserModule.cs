@@ -21,7 +21,7 @@ public class UserModule : ICarterModule
             return TypedResults.Ok("If you see this you're authenticated");
         })
         .RequireAuthorization(CustomPoliciesConstants.USER_POLICY_REQUIREMENT)
-        .Produces<TaskResult>(403);
+        .Produces<TaskResult>(StatusCodes.Status403Forbidden);
     }
 
     private RouteGroupBuilder CreateApiVersions(IEndpointRouteBuilder app)
@@ -39,6 +39,8 @@ public class UserModule : ICarterModule
 
     private async Task<IResult> CreateUser(IJwtTokenService jwtTokenService)
     {
+        throw new Exception("This is my custom exception");
+
         var testDict = new Dictionary<string, string>() 
         {
             { "Username", "TestValue" }
