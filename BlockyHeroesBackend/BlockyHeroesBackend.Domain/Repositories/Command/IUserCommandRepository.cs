@@ -1,4 +1,4 @@
-﻿using BlockyHeroesBackend.Domain.Entities;
+﻿using BlockyHeroesBackend.Domain.Entities.User;
 
 namespace BlockyHeroesBackend.Domain.Repositories.Command;
 

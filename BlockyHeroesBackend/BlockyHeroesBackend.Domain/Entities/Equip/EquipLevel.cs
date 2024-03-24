@@ -10,6 +10,7 @@ public class EquipLevel
 {
     public EquipLevelId Id { get; set; }
     public int Level { get; set; }
+    public long CoinsToPromote { get; set; }
     public int Lives { get; set; }
     public float JumpForce { get; set; }
     public float HorizontalSpeed { get; set; }

@@ -1,4 +1,4 @@
-﻿using BlockyHeroesBackend.Domain.Entities;
+﻿using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Infrastructure.Context.Contracts;
 using Microsoft.EntityFrameworkCore;
 

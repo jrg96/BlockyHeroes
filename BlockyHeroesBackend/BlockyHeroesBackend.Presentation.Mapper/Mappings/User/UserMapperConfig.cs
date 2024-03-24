@@ -8,7 +8,7 @@ public class UserMapperConfig : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config
-            .NewConfig<Domain.Entities.User, UserDto>()
+            .NewConfig<Domain.Entities.User.User, UserDto>()
             .Map(dest => dest.Id, src => src.Id.Value);
     }
 }

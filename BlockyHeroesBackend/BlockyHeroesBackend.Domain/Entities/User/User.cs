@@ -1,6 +1,6 @@
 ﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
 
-namespace BlockyHeroesBackend.Domain.Entities;
+namespace BlockyHeroesBackend.Domain.Entities.User;
 
 public class User
 {

@@ -1,5 +1,6 @@
 ﻿using BlockyHeroesBackend.Application.Services;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
+using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Infrastructure.Constants;
 using System.Security.Claims;
 
@@ -34,7 +35,7 @@ public class JwtMiddleware
                 .FirstOrDefault();
 
             // If Valid reconstruct the user with the bare information we need
-            Domain.Entities.User user = new Domain.Entities.User()
+            User user = new User()
             {
                 Id = new UserId(new Guid(userId)),
                 Role = string.IsNullOrEmpty(roleId) ?

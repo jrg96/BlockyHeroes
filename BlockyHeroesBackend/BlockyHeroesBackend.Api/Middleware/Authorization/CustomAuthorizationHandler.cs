@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BlockyHeroesBackend.Domain.Entities.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlockyHeroesBackend.Api.Middleware.Authorization;
 
@@ -13,7 +14,7 @@ public class CustomAuthorizationHandler : AuthorizationHandler<RoleRequirement>
 
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RoleRequirement requirement)
     {
-        Domain.Entities.User user = (Domain.Entities.User) _contextAccessor.HttpContext.Items["User"];
+        User user = (User) _contextAccessor.HttpContext.Items["User"];
 
         if (user != null && requirement.Roles.Any(role => role.Id == user.Role.Id))
         {

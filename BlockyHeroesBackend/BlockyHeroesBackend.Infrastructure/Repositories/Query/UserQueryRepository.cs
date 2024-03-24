@@ -1,5 +1,5 @@
 ﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
-using BlockyHeroesBackend.Domain.Entities;
+using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Domain.Repositories.Query;
 using BlockyHeroesBackend.Infrastructure.Context;
 using BlockyHeroesBackend.Infrastructure.Specifications.User;

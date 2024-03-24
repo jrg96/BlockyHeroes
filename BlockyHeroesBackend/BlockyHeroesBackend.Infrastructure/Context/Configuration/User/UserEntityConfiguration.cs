@@ -1,13 +1,12 @@
 ﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
-using BlockyHeroesBackend.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BlockyHeroesBackend.Infrastructure.Context.Configuration;
+namespace BlockyHeroesBackend.Infrastructure.Context.Configuration.User;
 
-public class UserEntityConfiguration : IEntityTypeConfiguration<User>
+public class UserEntityConfiguration : IEntityTypeConfiguration<Domain.Entities.User.User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<Domain.Entities.User.User> builder)
     {
         builder
             .HasKey(user => user.Id);

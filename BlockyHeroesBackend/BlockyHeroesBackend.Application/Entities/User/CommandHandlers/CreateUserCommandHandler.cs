@@ -9,7 +9,7 @@ using BlockyHeroesBackend.Domain.Repositories.Command;
 
 namespace BlockyHeroesBackend.Application.Entities.User.CommandHandlers;
 
-public class CreateUserCommandHandler : IOperationHandler<CreateUserCommand, Domain.Entities.User>
+public class CreateUserCommandHandler : IOperationHandler<CreateUserCommand, Domain.Entities.User.User>
 {
     private readonly IUserCommandRepository _userCommandRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -22,7 +22,7 @@ public class CreateUserCommandHandler : IOperationHandler<CreateUserCommand, Dom
         _userSecurityService = userSecurityService;
     }
 
-    public async Task<OperationResult<Domain.Entities.User>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<Domain.Entities.User.User>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         // By default when creating new account, populate it with default data
         UserId userId = UserId.CreateUserId();
@@ -32,7 +32,7 @@ public class CreateUserCommandHandler : IOperationHandler<CreateUserCommand, Dom
         (byte[] salt, string hash) = _userSecurityService.HashPassword(userId.Value.ToString());
         (byte[] saltFinal, string hashFinal) = _userSecurityService.HashPassword(hash);
 
-        Domain.Entities.User user = new Domain.Entities.User()
+        Domain.Entities.User.User user = new Domain.Entities.User.User()
         {
             Id = userId,
             Name = "Player",
@@ -45,11 +45,11 @@ public class CreateUserCommandHandler : IOperationHandler<CreateUserCommand, Dom
         await _userCommandRepository.InsertAsync(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new OperationResult<Domain.Entities.User>()
+        return new OperationResult<Domain.Entities.User.User>()
         {
             Success = true,
             Errors = new List<Error>(),
-            Data = new Domain.Entities.User()
+            Data = new Domain.Entities.User.User()
             {
                 Id = user.Id,
                 Name = user.Name,

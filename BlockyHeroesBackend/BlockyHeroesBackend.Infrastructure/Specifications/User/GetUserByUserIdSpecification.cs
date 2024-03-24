@@ -3,7 +3,7 @@ using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
 
 namespace BlockyHeroesBackend.Infrastructure.Specifications.User;
 
-public class GetUserByUserIdSpecification : Specification<Domain.Entities.User>
+public class GetUserByUserIdSpecification : Specification<Domain.Entities.User.User>
 {
     public GetUserByUserIdSpecification(UserId userId)
     {
