@@ -4,6 +4,13 @@ using Carter;
 using BlockyHeroesBackend.Application.Services;
 using BlockyHeroesBackend.Api.Middleware.Authorization;
 using BlockyHeroesBackend.Presentation.Common;
+using MediatR;
+using BlockyHeroesBackend.Application.Entities.User.Commands;
+using BlockyHeroesBackend.Presentation.RequestResponse.User.Request;
+using Microsoft.AspNetCore.Mvc;
+using MapsterMapper;
+using BlockyHeroesBackend.Presentation.RequestResponse.User.Dto;
+using Mapster;
 
 namespace BlockyHeroesBackend.Api.Modules;
 
@@ -14,7 +21,10 @@ public class UserModule : ICarterModule
         RouteGroupBuilder userGroup = CreateApiVersions(app);
         var v1 = userGroup.MapGroup("").HasApiVersion(1);
 
-        v1.MapPost("/", CreateUser);
+        v1.MapPost("/", CreateUser)
+            .Produces<TaskResult>(StatusCodes.Status403Forbidden)
+            .Produces<TaskResult>(StatusCodes.Status400BadRequest)
+            .Produces<TaskResult<UserDto>>(StatusCodes.Status200OK); ;
 
         v1.MapPost("/list", () =>
         {
@@ -37,19 +47,23 @@ public class UserModule : ICarterModule
             .WithApiVersionSet(versionSet);
     }
 
-    private async Task<IResult> CreateUser(IJwtTokenService jwtTokenService)
+    private async Task<IResult> CreateUser(IMediator mediator, IJwtTokenService jwtTokenService, IMapper mapper, [FromBody] CreateUserRequest createUserRequest)
     {
-        throw new Exception("This is my custom exception");
+        var result = await mediator.Send(new CreateUserCommand());
 
-        var testDict = new Dictionary<string, string>() 
+        if (!result.Success)
         {
-            { "Username", "TestValue" }
-        };
+            return TypedResults.BadRequest(new TaskResult()
+            {
+                Success = false,
+                Errors = result.Errors.Select(e => e.Message)
+            });
+        }
 
-        var token = jwtTokenService.GenerateToken(testDict);
-
-        var test = jwtTokenService.DecodeToken(token);
-
-        return TypedResults.Ok("Hello World");
+        return TypedResults.Ok(new TaskResult<UserDto>()
+        {
+            Success = true,
+            Data = result.Data.Adapt<UserDto>()
+        });
     }
 }

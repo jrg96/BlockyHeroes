@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using BlockyHeroesBackend.Api.Middleware;
 using BlockyHeroesBackend.Api.Middleware.Authorization;
+using BlockyHeroesBackend.Presentation.Mapper.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
 builder.Services.AddCustomAuthentication();
+builder.Services.AddCustomMappings();
 
 var app = builder.Build();
 app.AddCustomExceptionMiddleware();

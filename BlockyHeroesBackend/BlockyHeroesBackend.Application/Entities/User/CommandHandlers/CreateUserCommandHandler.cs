@@ -26,15 +26,19 @@ public class CreateUserCommandHandler : IOperationHandler<CreateUserCommand, Dom
     {
         // By default when creating new account, populate it with default data
         UserId userId = UserId.CreateUserId();
+
+        // To Create the final users password, will generate a random sequence of characters
+        // Through encryption, and later that password will be rehashed to get the final encrypted password
         (byte[] salt, string hash) = _userSecurityService.HashPassword(userId.Value.ToString());
+        (byte[] saltFinal, string hashFinal) = _userSecurityService.HashPassword(hash);
 
         Domain.Entities.User user = new Domain.Entities.User()
         {
             Id = userId,
             Name = "Player",
             Role = Roles.User,
-            Password = hash,
-            Salt = salt,
+            Password = hashFinal,
+            Salt = saltFinal,
             Email = $"{userId.Value.ToString()}@blockyheroes.com"
         };
 
@@ -45,7 +49,14 @@ public class CreateUserCommandHandler : IOperationHandler<CreateUserCommand, Dom
         {
             Success = true,
             Errors = new List<Error>(),
-            Data = user
+            Data = new Domain.Entities.User()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Role = Roles.User,
+                Password = hash,
+                Email = user.Email,
+            }
         };
     }
 }

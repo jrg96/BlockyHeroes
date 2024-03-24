@@ -6,7 +6,7 @@ public class TaskResult
     public IEnumerable<string> Errors { get; set; } = new List<string>();
 }
 
-public class TaskResult<T> where T : class
+public class TaskResult<T> : TaskResult where T : class
 {
     public T Data { get; set; }
 }

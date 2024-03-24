@@ -10,6 +10,7 @@
     <PackageReference Include="Asp.Versioning.Http" Version="8.0.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
     <PackageReference Include="Carter" Version="8.0.0" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
       <PrivateAssets>all</PrivateAssets>
@@ -21,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BlockyHeroesBackend.Application\BlockyHeroesBackend.Application.csproj" />
     <ProjectReference Include="..\BlockyHeroesBackend.Infrastructure\BlockyHeroesBackend.Infrastructure.csproj" />
+    <ProjectReference Include="..\BlockyHeroesBackend.Presentation.Mapper\BlockyHeroesBackend.Presentation.Mapper.csproj" />
     <ProjectReference Include="..\BlockyHeroesBackend.Presentation\BlockyHeroesBackend.Presentation.csproj" />
   </ItemGroup>
 
