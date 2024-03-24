@@ -1,6 +1,4 @@
-﻿using Asp.Versioning.Builder;
-using Asp.Versioning;
-using Carter;
+﻿using Carter;
 using BlockyHeroesBackend.Application.Services;
 using BlockyHeroesBackend.Api.Middleware.Authorization;
 using BlockyHeroesBackend.Presentation.Common;
@@ -14,11 +12,11 @@ using Mapster;
 
 namespace BlockyHeroesBackend.Api.Modules;
 
-public class UserModule : ICarterModule
+public class UserModule : BaseModule, ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        RouteGroupBuilder userGroup = CreateApiVersions(app);
+        RouteGroupBuilder userGroup = CreateApiVersions(app, "user");
         var v1 = userGroup.MapGroup("").HasApiVersion(1);
 
         v1.MapPost("/", CreateUser)
@@ -32,19 +30,6 @@ public class UserModule : ICarterModule
         })
         .RequireAuthorization(CustomPoliciesConstants.USER_POLICY_REQUIREMENT)
         .Produces<TaskResult>(StatusCodes.Status403Forbidden);
-    }
-
-    private RouteGroupBuilder CreateApiVersions(IEndpointRouteBuilder app)
-    {
-        ApiVersionSet versionSet = app
-            .NewApiVersionSet()
-            .HasApiVersion(new ApiVersion(1))
-            .ReportApiVersions()
-            .Build();
-
-        return app
-            .MapGroup("/api/v{version:apiVersion}/user")
-            .WithApiVersionSet(versionSet);
     }
 
     private async Task<IResult> CreateUser(IMediator mediator, IJwtTokenService jwtTokenService, IMapper mapper, [FromBody] CreateUserRequest createUserRequest)
