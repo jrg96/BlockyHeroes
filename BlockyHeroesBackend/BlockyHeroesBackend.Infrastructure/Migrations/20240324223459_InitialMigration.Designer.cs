@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlockyHeroesBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(BlockyHeroesDbContext))]
-    [Migration("20240324214331_InitialMigration")]
+    [Migration("20240324223459_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -36,13 +36,16 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Equip");
+                    b.ToTable("Equips");
                 });
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("CoinsToPromote")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("EquipId")
                         .HasColumnType("uniqueidentifier");
@@ -63,10 +66,10 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
 
                     b.HasIndex("EquipId");
 
-                    b.ToTable("EquipLevel");
+                    b.ToTable("EquipLevels");
                 });
 
-            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User", b =>
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");

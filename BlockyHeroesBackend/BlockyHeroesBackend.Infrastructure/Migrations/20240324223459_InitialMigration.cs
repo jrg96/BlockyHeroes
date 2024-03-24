@@ -12,7 +12,7 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Equip",
+                name: "Equips",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -20,7 +20,7 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Equip", x => x.Id);
+                    table.PrimaryKey("PK_Equips", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -40,11 +40,12 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EquipLevel",
+                name: "EquipLevels",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false),
+                    CoinsToPromote = table.Column<long>(type: "bigint", nullable: false),
                     Lives = table.Column<int>(type: "int", nullable: false),
                     JumpForce = table.Column<float>(type: "real", nullable: false),
                     HorizontalSpeed = table.Column<float>(type: "real", nullable: false),
@@ -52,18 +53,18 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EquipLevel", x => x.Id);
+                    table.PrimaryKey("PK_EquipLevels", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EquipLevel_Equip_EquipId",
+                        name: "FK_EquipLevels_Equips_EquipId",
                         column: x => x.EquipId,
-                        principalTable: "Equip",
+                        principalTable: "Equips",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EquipLevel_EquipId",
-                table: "EquipLevel",
+                name: "IX_EquipLevels_EquipId",
+                table: "EquipLevels",
                 column: "EquipId");
 
             migrationBuilder.CreateIndex(
@@ -77,13 +78,13 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EquipLevel");
+                name: "EquipLevels");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Equip");
+                name: "Equips");
         }
     }
 }
