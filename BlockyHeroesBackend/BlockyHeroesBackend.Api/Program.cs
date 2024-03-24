@@ -8,6 +8,7 @@ using BlockyHeroesBackend.Api.Swagger;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using BlockyHeroesBackend.Api.Middleware;
+using BlockyHeroesBackend.Api.Middleware.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,7 @@ builder.Services.AddSwaggerGen(options =>
 // Adding custom extensions
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
+builder.Services.AddCustomAuthentication();
 
 var app = builder.Build();
 
@@ -64,6 +66,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapCarter();
 app.AddJwtValidationMiddleware();

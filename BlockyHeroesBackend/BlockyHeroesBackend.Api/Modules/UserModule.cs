@@ -2,6 +2,8 @@
 using Asp.Versioning;
 using Carter;
 using BlockyHeroesBackend.Application.Services;
+using BlockyHeroesBackend.Api.Middleware.Authorization;
+using BlockyHeroesBackend.Presentation.Common;
 
 namespace BlockyHeroesBackend.Api.Modules;
 
@@ -13,6 +15,13 @@ public class UserModule : ICarterModule
         var v1 = userGroup.MapGroup("").HasApiVersion(1);
 
         v1.MapPost("/", CreateUser);
+
+        v1.MapPost("/list", () =>
+        {
+            return TypedResults.Ok("If you see this you're authenticated");
+        })
+        .RequireAuthorization(CustomPoliciesConstants.USER_POLICY_REQUIREMENT)
+        .Produces<TaskResult>(403);
     }
 
     private RouteGroupBuilder CreateApiVersions(IEndpointRouteBuilder app)
