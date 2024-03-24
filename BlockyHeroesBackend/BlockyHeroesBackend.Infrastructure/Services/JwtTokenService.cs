@@ -44,4 +44,33 @@ public class JwtTokenService : IJwtTokenService
         var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
         return token;
     }
+
+    public bool ValidateToken(string token)
+    {
+        if (token == null)
+            return false;
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
+        try
+        {
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            return true;
+        }
+        catch
+        {
+            // return null if validation fails
+            return false;
+        }
+    }
 }

@@ -6,4 +6,5 @@ public interface IJwtTokenService
 {
     string GenerateToken(Dictionary<string, string> claims);
     IEnumerable<Claim> DecodeToken(string token);
+    bool ValidateToken(string token);
 }

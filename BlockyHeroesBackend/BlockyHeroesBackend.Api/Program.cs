@@ -7,6 +7,7 @@ using Asp.Versioning;
 using BlockyHeroesBackend.Api.Swagger;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using BlockyHeroesBackend.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,10 +66,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapCarter();
+app.AddJwtValidationMiddleware();
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
