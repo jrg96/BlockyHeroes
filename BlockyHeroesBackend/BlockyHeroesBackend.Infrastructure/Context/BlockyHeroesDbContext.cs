@@ -10,6 +10,7 @@ public class BlockyHeroesDbContext : DbContext, IBlockyHeroesDbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Equip> Equips { get; set; }
     public DbSet<EquipLevel> EquipLevels { get; set; }
+    public DbSet<UserEquipment> UserEquipments { get; set; }
 
     public BlockyHeroesDbContext(DbContextOptions<BlockyHeroesDbContext> options) : base(options)
     {

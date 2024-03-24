@@ -101,6 +101,29 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.UserEquipment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EquipLevelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquipLevelId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserEquipments");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", b =>
                 {
                     b.HasOne("BlockyHeroesBackend.Domain.Entities.Equip.Equip", "Equip")
@@ -112,9 +135,38 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Navigation("Equip");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.UserEquipment", b =>
+                {
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", "EquipLevel")
+                        .WithMany("UserEquipment")
+                        .HasForeignKey("EquipLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.User.User", "Owner")
+                        .WithMany("UserEquipment")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EquipLevel");
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.Equip", b =>
                 {
                     b.Navigation("EquipmentEvolutions");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", b =>
+                {
+                    b.Navigation("UserEquipment");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.User", b =>
+                {
+                    b.Navigation("UserEquipment");
                 });
 #pragma warning restore 612, 618
         }

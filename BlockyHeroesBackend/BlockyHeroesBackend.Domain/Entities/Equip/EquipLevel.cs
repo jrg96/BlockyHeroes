@@ -1,4 +1,5 @@
 ﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
+using BlockyHeroesBackend.Domain.Entities.User;
 
 namespace BlockyHeroesBackend.Domain.Entities.Equip;
 
@@ -18,4 +19,6 @@ public class EquipLevel
     // Foreign key properties
     public EquipId EquipId { get; set; }
     public Equip Equip { get; set; }
+
+    public ICollection<UserEquipment> UserEquipment { get; set; }
 }

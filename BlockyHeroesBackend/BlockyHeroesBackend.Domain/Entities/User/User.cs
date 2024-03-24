@@ -10,4 +10,7 @@ public class User
     public string Email { get; set; }
     public string Password { get; set; }
     public byte[] Salt { get; set; }
+
+    // Foreign Key Relationships
+    public ICollection<UserEquipment> UserEquipment { get; set; }
 }
