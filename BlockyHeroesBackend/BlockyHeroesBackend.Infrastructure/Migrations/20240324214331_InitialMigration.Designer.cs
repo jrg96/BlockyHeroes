@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlockyHeroesBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(BlockyHeroesDbContext))]
-    [Migration("20240323205730_InitialMigration")]
+    [Migration("20240324214331_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -24,6 +24,47 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.Equip", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Equip");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EquipId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("HorizontalSpeed")
+                        .HasColumnType("real");
+
+                    b.Property<float>("JumpForce")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Lives")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquipId");
+
+                    b.ToTable("EquipLevel");
+                });
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User", b =>
                 {
@@ -58,6 +99,22 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", b =>
+                {
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Equip.Equip", "Equip")
+                        .WithMany("EquipmentEvolutions")
+                        .HasForeignKey("EquipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equip");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.Equip", b =>
+                {
+                    b.Navigation("EquipmentEvolutions");
                 });
 #pragma warning restore 612, 618
         }

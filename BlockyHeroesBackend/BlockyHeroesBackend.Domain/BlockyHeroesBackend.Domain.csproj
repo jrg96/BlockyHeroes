@@ -10,4 +10,9 @@
     <ProjectReference Include="..\BlockyHeroesBackend.Domain.Common\BlockyHeroesBackend.Domain.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\User\" />
+    <Folder Include="Entities\Powerup\" />
+  </ItemGroup>
+
 </Project>
