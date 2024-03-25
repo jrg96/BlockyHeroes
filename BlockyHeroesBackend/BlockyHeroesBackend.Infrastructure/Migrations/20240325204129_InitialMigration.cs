@@ -12,6 +12,19 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Characters",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Characters", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Equips",
                 columns: table => new
                 {
@@ -55,6 +68,28 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CharacterLevels",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    Lives = table.Column<int>(type: "int", nullable: false),
+                    JumpForce = table.Column<float>(type: "real", nullable: false),
+                    HorizontalSpeed = table.Column<float>(type: "real", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CharacterLevels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CharacterLevels_Characters_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Characters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,6 +142,32 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CharacterLevelRequirements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    CharacterLevelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CharacterLevelRequirements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CharacterLevelRequirements_CharacterLevels_CharacterLevelId",
+                        column: x => x.CharacterLevelId,
+                        principalTable: "CharacterLevels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CharacterLevelRequirements_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserEquipments",
                 columns: table => new
                 {
@@ -131,6 +192,21 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CharacterLevelRequirements_CharacterLevelId",
+                table: "CharacterLevelRequirements",
+                column: "CharacterLevelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CharacterLevelRequirements_ItemId",
+                table: "CharacterLevelRequirements",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CharacterLevels_CharacterId",
+                table: "CharacterLevels",
+                column: "CharacterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EquipLevels_EquipId",
@@ -168,10 +244,16 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CharacterLevelRequirements");
+
+            migrationBuilder.DropTable(
                 name: "UserEquipments");
 
             migrationBuilder.DropTable(
                 name: "UserItems");
+
+            migrationBuilder.DropTable(
+                name: "CharacterLevels");
 
             migrationBuilder.DropTable(
                 name: "EquipLevels");
@@ -181,6 +263,9 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Characters");
 
             migrationBuilder.DropTable(
                 name: "Equips");

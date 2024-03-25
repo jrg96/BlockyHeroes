@@ -1,4 +1,5 @@
 ﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.Item;
+using BlockyHeroesBackend.Domain.Entities.Character;
 using BlockyHeroesBackend.Domain.Entities.User;
 
 namespace BlockyHeroesBackend.Domain.Entities.Item;
@@ -12,4 +13,5 @@ public class Item
 
     // Foreign Key relationships
     public ICollection<UserItem> UserItems { get; set; }
+    public ICollection<CharacterLevelRequirement> CharacterLevelRequirements { get; set; }
 }

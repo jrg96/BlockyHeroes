@@ -22,6 +22,76 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.Character", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Characters");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("HorizontalSpeed")
+                        .HasColumnType("real");
+
+                    b.Property<float>("JumpForce")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Lives")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterId");
+
+                    b.ToTable("CharacterLevels");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevelRequirement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CharacterLevelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterLevelId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("CharacterLevelRequirements");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.Equip", b =>
                 {
                     b.Property<Guid>("Id")
@@ -183,6 +253,36 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.ToTable("UserItems");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", b =>
+                {
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Character.Character", "Character")
+                        .WithMany("CharacterLevels")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevelRequirement", b =>
+                {
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", "CharacterLevel")
+                        .WithMany("CharacterLevelRequirements")
+                        .HasForeignKey("CharacterLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Item.Item", "Item")
+                        .WithMany("CharacterLevelRequirements")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CharacterLevel");
+
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", b =>
                 {
                     b.HasOne("BlockyHeroesBackend.Domain.Entities.Equip.Equip", "Equip")
@@ -232,6 +332,16 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.Character", b =>
+                {
+                    b.Navigation("CharacterLevels");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", b =>
+                {
+                    b.Navigation("CharacterLevelRequirements");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.Equip", b =>
                 {
                     b.Navigation("EquipmentEvolutions");
@@ -244,6 +354,8 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Item.Item", b =>
                 {
+                    b.Navigation("CharacterLevelRequirements");
+
                     b.Navigation("UserItems");
                 });
 
