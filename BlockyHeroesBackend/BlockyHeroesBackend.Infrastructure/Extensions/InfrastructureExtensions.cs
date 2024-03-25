@@ -34,6 +34,16 @@ public static class InfrastructureExtensions
 
         service.AddScoped<IUserItemCommandRepository, UserItemCommandRepository>();
         service.AddScoped<IUserItemQueryRepository, UserItemQueryRepository>();
+
+        service.AddScoped<ICharacterCommandRepository, CharacterCommandRepository>();
+        service.AddScoped<ICharacterQueryRepository, CharacterQueryRepository>();
+
+        service.AddScoped<ICharacterLevelCommandRepository, CharacterLevelCommandRepository>();
+        service.AddScoped<ICharacterLevelQueryRepository, CharacterLevelQueryRepository>();
+
+        service.AddScoped<ICharacterLevelRequirementCommandRepository, CharacterLevelRequirementCommandRepository>();
+        service.AddScoped<ICharacterLevelRequirementQueryRepository, CharacterLevelRequirementQueryRepository>();
+        
         return service;
     }
 }
