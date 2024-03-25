@@ -28,6 +28,12 @@ public static class InfrastructureExtensions
 
         service.AddScoped<IEquipCommandRepository, EquipCommandRepository>();
         service.AddScoped<IEquipQueryRepository, EquipQueryRepository>();
+
+        service.AddScoped<IItemCommandRepository, ItemCommandRepository>();
+        service.AddScoped<IItemQueryRepository, ItemQueryRepository>();
+
+        service.AddScoped<IUserItemCommandRepository, UserItemCommandRepository>();
+        service.AddScoped<IUserItemQueryRepository, UserItemQueryRepository>();
         return service;
     }
 }
