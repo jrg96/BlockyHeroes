@@ -1,0 +1,21 @@
+[
+  {
+    "Description": "The shoes of the humble Sleipnir, it's been told they make you faster",
+    "EquipmentEvolutions": [
+      {
+        "Level": 1,
+        "CoinsToPromote": 0,
+        "Lives": 0,
+        "JumpForce": 0.0,
+        "HorizontalSpeed": 0.05
+      },
+      {
+        "Level": 2,
+        "CoinsToPromote": 100,
+        "Lives": 0,
+        "JumpForce": 0.0,
+        "HorizontalSpeed": 0.1
+      }
+    ]
+  }
+]
