@@ -10,6 +10,7 @@ namespace BlockyHeroesBackend.Domain.Entities.Equip;
 public class Equip
 {
     public EquipId Id { get; set; }
+    public string Name { get; set; }
     public string Description { get; set; }
 
     // Foreign Key properties
