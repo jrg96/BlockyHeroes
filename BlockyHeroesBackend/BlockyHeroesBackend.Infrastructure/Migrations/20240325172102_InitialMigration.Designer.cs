@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlockyHeroesBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(BlockyHeroesDbContext))]
-    [Migration("20240325034420_InitialMigration")]
+    [Migration("20240325172102_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -71,6 +71,29 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.HasIndex("EquipId");
 
                     b.ToTable("EquipLevels");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Item.Item", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(600)
+                        .HasColumnType("nvarchar(600)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.User", b =>
@@ -140,6 +163,29 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.ToTable("UserEquipments");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.UserItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserItems");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", b =>
                 {
                     b.HasOne("BlockyHeroesBackend.Domain.Entities.Equip.Equip", "Equip")
@@ -170,6 +216,25 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.UserItem", b =>
+                {
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Item.Item", "Item")
+                        .WithMany("UserItems")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.User.User", "User")
+                        .WithMany("UserItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.Equip", b =>
                 {
                     b.Navigation("EquipmentEvolutions");
@@ -180,9 +245,16 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Navigation("UserEquipment");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Item.Item", b =>
+                {
+                    b.Navigation("UserItems");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.User", b =>
                 {
                     b.Navigation("UserEquipment");
+
+                    b.Navigation("UserItems");
                 });
 #pragma warning restore 612, 618
         }

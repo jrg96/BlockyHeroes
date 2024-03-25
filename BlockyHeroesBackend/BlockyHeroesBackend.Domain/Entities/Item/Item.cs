@@ -1,0 +1,15 @@
+﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.Item;
+using BlockyHeroesBackend.Domain.Entities.User;
+
+namespace BlockyHeroesBackend.Domain.Entities.Item;
+
+public class Item
+{
+    public ItemId Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public ItemTypes Type { get; set; }
+
+    // Foreign Key relationships
+    public ICollection<UserItem> UserItems { get; set; }
+}
