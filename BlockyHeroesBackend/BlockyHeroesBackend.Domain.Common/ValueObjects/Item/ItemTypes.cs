@@ -3,7 +3,7 @@
 public record ItemTypes(int Id, string Name)
 {
     public static ItemTypes Consumable { get; } = new ItemTypes(1, "Consumable");
-    public static ItemTypes Static { get; } = new ItemTypes(1, "Static");
+    public static ItemTypes Static { get; } = new ItemTypes(2, "Static");
 
     public static ItemTypes Get(int id)
     {

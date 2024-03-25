@@ -1,0 +1,34 @@
+[
+  {
+    "Name": "Apples",
+    "Description": "Found in the wild, used to enhance characters",
+    "Type": {
+      "Id": 2,
+      "Name": "Static"
+    }
+  },
+  {
+    "Name": "Sky Shard",
+    "Description": "Proof you have reached the limits of the world",
+    "Type": {
+      "Id": 2,
+      "Name": "Static"
+    }
+  },
+  {
+    "Name": "Shard of the mighty boy",
+    "Description": "Shard of the legendary jumper boy, used to evolve characters",
+    "Type": {
+      "Id": 2,
+      "Name": "Static"
+    }
+  },
+  {
+    "Name": "Shard of the superhero girl",
+    "Description": "Shard of the legendary jumper girl, used to evolve characters",
+    "Type": {
+      "Id": 2,
+      "Name": "Static"
+    }
+  }
+]

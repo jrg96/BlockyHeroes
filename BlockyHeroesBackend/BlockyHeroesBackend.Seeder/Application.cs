@@ -1,11 +1,14 @@
 ﻿using BlockyHeroesBackend.Application.Services;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
+using BlockyHeroesBackend.Domain.Common.ValueObjects.Item;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
 using BlockyHeroesBackend.Domain.Entities.Equip;
+using BlockyHeroesBackend.Domain.Entities.Item;
 using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Domain.Repositories;
 using BlockyHeroesBackend.Domain.Repositories.Command;
 using BlockyHeroesBackend.Domain.Repositories.Query;
+using BlockyHeroesBackend.Infrastructure.Repositories.Query;
 using System.Text.Json;
 
 namespace BlockyHeroesBackend.Seeder;
@@ -13,8 +16,11 @@ namespace BlockyHeroesBackend.Seeder;
 public class Application
 {
     private readonly IEquipCommandRepository _equipCommandRepository;
-    private readonly IUserEquipmentCommandRepository _userEquipmentCommandRepository;
     private readonly IEquipQueryRepository _equipQueryRepository;
+    private readonly IItemCommandRepository _itemCommandRepository;
+    private readonly IItemQueryRepository _itemQueryRepository;
+    private readonly IUserEquipmentCommandRepository _userEquipmentCommandRepository;
+    private readonly IUserItemCommandRepository _userItemCommandRepository;
     private readonly IUserCommandRepository _userCommandRepository;
     
     private readonly IUnitOfWork _unitOfWork;
@@ -25,17 +31,27 @@ public class Application
     public Application(
         IEquipCommandRepository equipCommandRepository,
         IEquipQueryRepository equipQueryRepository,
+        IItemCommandRepository itemCommandRepository,
+        IItemQueryRepository itemQueryRepository,
         IUserEquipmentCommandRepository userEquipmentCommandRepository,
+        IUserItemCommandRepository userItemCommandRepository,
         IUserCommandRepository userCommandRepository,
         IUnitOfWork unitOfWork, 
         IUserSecurityService userSecurityService)
     {
         _equipCommandRepository = equipCommandRepository;
+        _equipQueryRepository = equipQueryRepository;
+        _itemCommandRepository = itemCommandRepository;
+        _itemQueryRepository = itemQueryRepository;
+
+        _userEquipmentCommandRepository = userEquipmentCommandRepository;
+        _userItemCommandRepository = userItemCommandRepository;
+
         _userCommandRepository = userCommandRepository;
         _unitOfWork = unitOfWork;
         _userSecurityService = userSecurityService;
-        _equipQueryRepository = equipQueryRepository;
-        _userEquipmentCommandRepository = userEquipmentCommandRepository;
+        
+        
     }
 
     public async Task RunSeeder()
@@ -46,8 +62,14 @@ public class Application
         Console.WriteLine("Building Equipment List");
         await LoadEquips();
 
+        Console.WriteLine("Building Item List");
+        await LoadItems();
+
         Console.WriteLine("Creating random equipment to users");
         await GenerateRandomUserEquipment();
+
+        Console.WriteLine("Creating random items to users");
+        await GenerateRandomUserItems();
 
         Console.WriteLine("Sample data loaded successfully!");
     }
@@ -100,6 +122,20 @@ public class Application
         await _unitOfWork.SaveChangesAsync();
     }
 
+    private async Task LoadItems()
+    {
+        string data = File.ReadAllText("Samples/items.json");
+        var items = JsonSerializer.Deserialize<List<Item>>(data);
+
+        foreach(var item in items)
+        {
+            item.Id = ItemId.CreateItemId();
+            await _itemCommandRepository.InsertAsync(item);
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
     private async Task GenerateRandomUserEquipment()
     {
         IEnumerable<Equip> availableEquipment = await _equipQueryRepository.GetAllAsync();
@@ -126,6 +162,33 @@ public class Application
                 };
 
                 await _userEquipmentCommandRepository.InsertAsync(userEquipment);
+            }
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    private async Task GenerateRandomUserItems()
+    {
+        var items = await _itemQueryRepository.GetAllAsync();
+
+        foreach(var user in _users)
+        {
+            foreach(var item in items)
+            {
+                Random random = new Random();
+
+                UserItem userItem = new UserItem()
+                {
+                    Id = UserItemId.CreateUserItemId(),
+                    Quantity = random.Next(1, 500),
+                    UserId = user.Id,
+                    User = user,
+                    ItemId = item.Id,
+                    Item = item,
+                };
+
+                await _userItemCommandRepository.InsertAsync(userItem);
             }
         }
 
