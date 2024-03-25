@@ -1,0 +1,30 @@
+[
+  {
+    "Name": "The Boy",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

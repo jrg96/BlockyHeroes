@@ -1,14 +1,15 @@
 ﻿using BlockyHeroesBackend.Application.Services;
+using BlockyHeroesBackend.Domain.Common.ValueObjects.Character;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Item;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
+using BlockyHeroesBackend.Domain.Entities.Character;
 using BlockyHeroesBackend.Domain.Entities.Equip;
 using BlockyHeroesBackend.Domain.Entities.Item;
 using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Domain.Repositories;
 using BlockyHeroesBackend.Domain.Repositories.Command;
 using BlockyHeroesBackend.Domain.Repositories.Query;
-using BlockyHeroesBackend.Infrastructure.Repositories.Query;
 using System.Text.Json;
 
 namespace BlockyHeroesBackend.Seeder;
@@ -19,6 +20,7 @@ public class Application
     private readonly IEquipQueryRepository _equipQueryRepository;
     private readonly IItemCommandRepository _itemCommandRepository;
     private readonly IItemQueryRepository _itemQueryRepository;
+    private readonly ICharacterCommandRepository _characterCommandRepository;
     private readonly IUserEquipmentCommandRepository _userEquipmentCommandRepository;
     private readonly IUserItemCommandRepository _userItemCommandRepository;
     private readonly IUserCommandRepository _userCommandRepository;
@@ -33,6 +35,7 @@ public class Application
         IEquipQueryRepository equipQueryRepository,
         IItemCommandRepository itemCommandRepository,
         IItemQueryRepository itemQueryRepository,
+        ICharacterCommandRepository characterCommandRepository,
         IUserEquipmentCommandRepository userEquipmentCommandRepository,
         IUserItemCommandRepository userItemCommandRepository,
         IUserCommandRepository userCommandRepository,
@@ -43,6 +46,7 @@ public class Application
         _equipQueryRepository = equipQueryRepository;
         _itemCommandRepository = itemCommandRepository;
         _itemQueryRepository = itemQueryRepository;
+        _characterCommandRepository = characterCommandRepository;
 
         _userEquipmentCommandRepository = userEquipmentCommandRepository;
         _userItemCommandRepository = userItemCommandRepository;
@@ -64,6 +68,9 @@ public class Application
 
         Console.WriteLine("Building Item List");
         await LoadItems();
+
+        Console.WriteLine("Building Character List");
+        await LoadCharacters();
 
         Console.WriteLine("Creating random equipment to users");
         await GenerateRandomUserEquipment();
@@ -131,6 +138,41 @@ public class Application
         {
             item.Id = ItemId.CreateItemId();
             await _itemCommandRepository.InsertAsync(item);
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    private async Task LoadCharacters()
+    {
+        string data = File.ReadAllText("Samples/characters.json");
+
+        var characters = JsonSerializer.Deserialize<List<Character>>(data);
+        var items = await _itemQueryRepository.GetAllAsync();
+
+        foreach(var character in characters)
+        {
+            character.Id = CharacterId.CreateCharacterId();
+
+            // Fill Ids of CharacterLevel
+            character.CharacterLevels.AsParallel()
+                .ForAll(charLevel =>
+                    charLevel.Id = CharacterLevelId.CreateCharacterLevelId());
+
+            // Fill Ids of character requirement
+            character.CharacterLevels
+                .SelectMany(charLevel => charLevel.CharacterLevelRequirements)
+                .AsParallel()
+                .ForAll(requirement =>
+                {
+                    requirement.Id = CharacterLevelRequirementId.CreateCharacterLevelRequirementId();
+                    requirement.Item =
+                    items.Where(item => item.Name == requirement.Item.Name)
+                    .FirstOrDefault();
+                    requirement.ItemId = requirement.Item.Id;
+                });
+
+            await _characterCommandRepository.InsertAsync(character);
         }
 
         await _unitOfWork.SaveChangesAsync();
