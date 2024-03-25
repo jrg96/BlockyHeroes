@@ -23,6 +23,11 @@ public static class InfrastructureExtensions
         service.AddScoped<IUserCommandRepository, UserCommandRepository>();
         service.AddScoped<IUserQueryRepository, UserQueryRepository>();
 
+        service.AddScoped<IUserEquipmentCommandRepository, UserEquipmentCommandRepository>();
+        service.AddScoped<IUserEquipmentQueryRepository, UserEquipmentQueryRepository>();
+
+        service.AddScoped<IEquipCommandRepository, EquipCommandRepository>();
+        service.AddScoped<IEquipQueryRepository, EquipQueryRepository>();
         return service;
     }
 }

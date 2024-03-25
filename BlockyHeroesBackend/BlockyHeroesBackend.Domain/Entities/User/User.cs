@@ -11,6 +11,11 @@ public class User
     public string Password { get; set; }
     public byte[] Salt { get; set; }
 
+    // Resource related variables
+    public long Coins { get; set; }
+    public int Stamina { get; set; }
+    public int MaxStamina { get; set; }
+
     // Foreign Key Relationships
     public ICollection<UserEquipment> UserEquipment { get; set; }
 }
