@@ -5,6 +5,7 @@ using BlockyHeroesBackend.Domain.Entities.Equip;
 using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Domain.Repositories;
 using BlockyHeroesBackend.Domain.Repositories.Command;
+using BlockyHeroesBackend.Domain.Repositories.Query;
 using System.Text.Json;
 
 namespace BlockyHeroesBackend.Seeder;
@@ -12,6 +13,8 @@ namespace BlockyHeroesBackend.Seeder;
 public class Application
 {
     private readonly IEquipCommandRepository _equipCommandRepository;
+    private readonly IUserEquipmentCommandRepository _userEquipmentCommandRepository;
+    private readonly IEquipQueryRepository _equipQueryRepository;
     private readonly IUserCommandRepository _userCommandRepository;
     
     private readonly IUnitOfWork _unitOfWork;
@@ -21,6 +24,8 @@ public class Application
 
     public Application(
         IEquipCommandRepository equipCommandRepository,
+        IEquipQueryRepository equipQueryRepository,
+        IUserEquipmentCommandRepository userEquipmentCommandRepository,
         IUserCommandRepository userCommandRepository,
         IUnitOfWork unitOfWork, 
         IUserSecurityService userSecurityService)
@@ -29,6 +34,8 @@ public class Application
         _userCommandRepository = userCommandRepository;
         _unitOfWork = unitOfWork;
         _userSecurityService = userSecurityService;
+        _equipQueryRepository = equipQueryRepository;
+        _userEquipmentCommandRepository = userEquipmentCommandRepository;
     }
 
     public async Task RunSeeder()
@@ -38,6 +45,9 @@ public class Application
 
         Console.WriteLine("Building Equipment List");
         await LoadEquips();
+
+        Console.WriteLine("Creating random equipment to users");
+        await GenerateRandomUserEquipment();
 
         Console.WriteLine("Sample data loaded successfully!");
     }
@@ -85,6 +95,38 @@ public class Application
             }
 
             await _equipCommandRepository.InsertAsync(eq);
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    private async Task GenerateRandomUserEquipment()
+    {
+        IEnumerable<Equip> availableEquipment = await _equipQueryRepository.GetAllAsync();
+
+        foreach(var user in _users)
+        {
+            foreach(var equip in availableEquipment)
+            {
+                Random random = new Random();
+
+                // Generate a couple of elements for the first level
+                EquipLevel? equipLevel = equip.EquipmentEvolutions
+                    .Where(eql => eql.Level == 1)
+                    .FirstOrDefault();
+
+                UserEquipment userEquipment = new UserEquipment()
+                {
+                    Id = UserEquipmentId.CreateEquipmentId(),
+                    EquipLevelId = equipLevel.Id,
+                    EquipLevel = equipLevel,
+                    UserId = user.Id,
+                    Owner = user,
+                    Quantity = random.Next(1, 40)
+                };
+
+                await _userEquipmentCommandRepository.InsertAsync(userEquipment);
+            }
         }
 
         await _unitOfWork.SaveChangesAsync();

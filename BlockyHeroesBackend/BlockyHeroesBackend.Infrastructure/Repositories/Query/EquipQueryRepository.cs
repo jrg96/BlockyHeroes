@@ -13,7 +13,7 @@ public class EquipQueryRepository : GenericQueryRepository<Equip>, IEquipQueryRe
     {
     }
 
-    public async Task<IEnumerable<Equip>> GetAll()
+    public async Task<IEnumerable<Equip>> GetAllAsync()
     {
         return await Find(new GetAllSpecification())
             .ToListAsync();
