@@ -13,6 +13,12 @@ public class EquipQueryRepository : GenericQueryRepository<Equip>, IEquipQueryRe
     {
     }
 
+    public async Task<IEnumerable<Equip>> GetAll()
+    {
+        return await Find(new GetAllSpecification())
+            .ToListAsync();
+    }
+
     public async Task<Equip?> GetByEquipLevelId(EquipLevelId equipLevelId)
     {
         return await Find(new GetByEquipLevelIdSpecification(equipLevelId))
