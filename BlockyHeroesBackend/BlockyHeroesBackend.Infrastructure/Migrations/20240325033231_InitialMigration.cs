@@ -32,7 +32,10 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Salt = table.Column<byte[]>(type: "varbinary(128)", maxLength: 128, nullable: false)
+                    Salt = table.Column<byte[]>(type: "varbinary(128)", maxLength: 128, nullable: false),
+                    Coins = table.Column<long>(type: "bigint", nullable: false),
+                    Stamina = table.Column<int>(type: "int", nullable: false),
+                    MaxStamina = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
