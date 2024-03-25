@@ -22,14 +22,7 @@ public class UserModule : BaseModule, ICarterModule
         v1.MapPost("/", CreateUser)
             .Produces<TaskResult>(StatusCodes.Status403Forbidden)
             .Produces<TaskResult>(StatusCodes.Status400BadRequest)
-            .Produces<TaskResult<UserDto>>(StatusCodes.Status200OK); ;
-
-        v1.MapPost("/list", () =>
-        {
-            return TypedResults.Ok("If you see this you're authenticated");
-        })
-        .RequireAuthorization(CustomPoliciesConstants.USER_POLICY_REQUIREMENT)
-        .Produces<TaskResult>(StatusCodes.Status403Forbidden);
+            .Produces<TaskResult<UserDto>>(StatusCodes.Status200OK);
     }
 
     private async Task<IResult> CreateUser(IMediator mediator, IJwtTokenService jwtTokenService, IMapper mapper, [FromBody] CreateUserRequest createUserRequest)

@@ -44,12 +44,12 @@ public class AuthenticationModule : BaseModule, ICarterModule
         // Generate token if login was successful
         Dictionary<string, string> claims = new Dictionary<string, string>()
         {
-            { JwtClaimConstants.USER_ID_CLAIM, result.Data.Id.ToString() }
+            { JwtClaimConstants.USER_ID_CLAIM, result.Data.Id.Value.ToString() }
         };
 
         return TypedResults.Ok(new TaskResult<string>()
         {
-            Success = false,
+            Success = true,
             Data = jwtTokenService.GenerateToken(claims)
         });
     }

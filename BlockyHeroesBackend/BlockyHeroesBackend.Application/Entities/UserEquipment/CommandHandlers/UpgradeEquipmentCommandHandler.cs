@@ -52,7 +52,7 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
         }
 
         // Step 2: After verifying the ownership, calculate if user has the corresponding resources
-        Domain.Entities.User.User? user = userEquip.Owner; ;
+        Domain.Entities.User.User? user = userEquip.Owner;
         Equip? equip = await _equipQueryRepository.GetByEquipLevelId(new EquipLevelId(request.EquipLevelId));
         EquipLevel? currentLevelEquip = equip.EquipmentEvolutions
             .Where(equipLevel => equipLevel.Id == equipLevelId)
