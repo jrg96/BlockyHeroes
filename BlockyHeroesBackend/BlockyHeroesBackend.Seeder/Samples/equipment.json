@@ -34,7 +34,7 @@
     ]
   },
   {
-    "Name":  "The Green Armor",
+    "Name": "The Green Armor",
     "Description": "Belongs to a legendary defender, an armor never destroyed",
     "EquipmentEvolutions": [
       {
@@ -64,6 +64,74 @@
         "Lives": 1,
         "JumpForce": 0.0,
         "HorizontalSpeed": 0.0
+      }
+    ]
+  },
+  {
+    "Name": "Moon Walk",
+    "Description": "A cape that makes you feel you're walking on the moon!",
+    "EquipmentEvolutions": [
+      {
+        "Level": 1,
+        "CoinsToPromote": 0,
+        "Lives": 0,
+        "JumpForce": 0.1,
+        "HorizontalSpeed": 0.00
+      },
+      {
+        "Level": 2,
+        "CoinsToPromote": 100,
+        "Lives": 0,
+        "JumpForce": 0.2,
+        "HorizontalSpeed": 0.0
+      },
+      {
+        "Level": 3,
+        "CoinsToPromote": 200,
+        "Lives": 0,
+        "JumpForce": 0.3,
+        "HorizontalSpeed": 0.0
+      },
+      {
+        "Level": 4,
+        "CoinsToPromote": 500,
+        "Lives": 0,
+        "JumpForce": 0.5,
+        "HorizontalSpeed": 0.0
+      }
+    ]
+  },
+  {
+    "Name": "Icarus Belt",
+    "Description": "The belt of Icarus, makes you have wings!, or something like that..",
+    "EquipmentEvolutions": [
+      {
+        "Level": 1,
+        "CoinsToPromote": 0,
+        "Lives": 0,
+        "JumpForce": 0.1,
+        "HorizontalSpeed": 0.05
+      },
+      {
+        "Level": 2,
+        "CoinsToPromote": 100,
+        "Lives": 0,
+        "JumpForce": 0.1,
+        "HorizontalSpeed": 0.1
+      },
+      {
+        "Level": 3,
+        "CoinsToPromote": 200,
+        "Lives": 0,
+        "JumpForce": 0.2,
+        "HorizontalSpeed": 0.12
+      },
+      {
+        "Level": 4,
+        "CoinsToPromote": 500,
+        "Lives": 0,
+        "JumpForce": 0.2,
+        "HorizontalSpeed": 0.14
       }
     ]
   }
