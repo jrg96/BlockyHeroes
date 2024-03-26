@@ -42,6 +42,7 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
         EquipLevelId equipLevelId = new EquipLevelId(request.EquipLevelId);
 
         // Step 1: Verify if the user has the ownership of the equipment + its level
+        // NOTE: There's no distinction between equips of the same level, so take the first one
         Domain.Entities.User.UserEquipment? userEquip = 
             (await _userEquipmentQueryRepository.GetByEquipLevelAndUser(userId, equipLevelId))
             .FirstOrDefault();
@@ -78,7 +79,6 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
         // Step 3: After we have validated user has the ownership of the item
         // and the resources to complete the enhacement, we proceed with the transaction
         user.Coins -= resourcesToUse;
-        userEquip.Quantity -= 1; // Since we can only enhance equip one at a time, substract 1
 
         // Verify if user already has the equipment at the new level
         // and if not, create a new entity
@@ -86,34 +86,13 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
             .Take(request.Levels)
             .Last();
 
-        Domain.Entities.User.UserEquipment? newUserEquip =
-            (await _userEquipmentQueryRepository.GetByEquipLevelAndUser(userId, desiredEquip.Id))
-            .FirstOrDefault();
+        // Update current equip to point to the next level EquipLevel
+        userEquip.EquipLevel = desiredEquip;
+        userEquip.EquipLevelId = desiredEquip.Id;
 
         // Execute the operations
         await _userCommandRepository.UpdateAsync(user);
         await _userEquipmentCommandRepository.UpdateAsync(userEquip);
-
-        if (newUserEquip == null)
-        {
-            newUserEquip = new Domain.Entities.User.UserEquipment()
-            {
-                Id = UserEquipmentId.CreateEquipmentId(),
-                EquipLevelId = desiredEquip.Id,
-                EquipLevel = desiredEquip,
-                Quantity = 1,
-                UserId = user.Id,
-                Owner = user,
-            };
-
-            await _userEquipmentCommandRepository.InsertAsync(newUserEquip);
-        }
-        else
-        {
-            newUserEquip.Quantity += 1;
-            await _userEquipmentCommandRepository.UpdateAsync(newUserEquip);
-        }
-
         await _unitOfWork.SaveChangesAsync();
 
         return new OperationResult()

@@ -193,17 +193,21 @@ public class Application
                     .Where(eql => eql.Level == 1)
                     .FirstOrDefault();
 
-                UserEquipment userEquipment = new UserEquipment()
-                {
-                    Id = UserEquipmentId.CreateEquipmentId(),
-                    EquipLevelId = equipLevel.Id,
-                    EquipLevel = equipLevel,
-                    UserId = user.Id,
-                    Owner = user,
-                    Quantity = random.Next(1, 40)
-                };
+                int max = random.Next(1, 15);
 
-                await _userEquipmentCommandRepository.InsertAsync(userEquipment);
+                for (int i = 0; i < max; i++)
+                {
+                    UserEquipment userEquipment = new UserEquipment()
+                    {
+                        Id = UserEquipmentId.CreateEquipmentId(),
+                        EquipLevelId = equipLevel.Id,
+                        EquipLevel = equipLevel,
+                        UserId = user.Id,
+                        Owner = user
+                    };
+
+                    await _userEquipmentCommandRepository.InsertAsync(userEquipment);
+                }
             }
         }
 
