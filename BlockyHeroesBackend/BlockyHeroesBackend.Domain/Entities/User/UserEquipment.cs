@@ -15,4 +15,7 @@ public class UserEquipment
 
     public EquipLevelId EquipLevelId { get; set; }
     public EquipLevel EquipLevel { get; set; }
+
+    public UserCharacter UserCharacterSlot1 { get; set; } // An Equip can appear on slot 1 or 2
+    public UserCharacter UserCharacterSlot2 { get; set; } // An Equip can appear on slot 1 or 2
 }

@@ -193,6 +193,43 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserCharacters",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CharacterLevelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserEquipmentIdSlot1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserEquipmentIdSlot2 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserCharacters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserCharacters_CharacterLevels_CharacterLevelId",
+                        column: x => x.CharacterLevelId,
+                        principalTable: "CharacterLevels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserCharacters_UserEquipments_UserEquipmentIdSlot1",
+                        column: x => x.UserEquipmentIdSlot1,
+                        principalTable: "UserEquipments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserCharacters_UserEquipments_UserEquipmentIdSlot2",
+                        column: x => x.UserEquipmentIdSlot2,
+                        principalTable: "UserEquipments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserCharacters_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CharacterLevelRequirements_CharacterLevelId",
                 table: "CharacterLevelRequirements",
@@ -212,6 +249,30 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 name: "IX_EquipLevels_EquipId",
                 table: "EquipLevels",
                 column: "EquipId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserCharacters_CharacterLevelId",
+                table: "UserCharacters",
+                column: "CharacterLevelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserCharacters_UserEquipmentIdSlot1",
+                table: "UserCharacters",
+                column: "UserEquipmentIdSlot1",
+                unique: true,
+                filter: "[UserEquipmentIdSlot1] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserCharacters_UserEquipmentIdSlot2",
+                table: "UserCharacters",
+                column: "UserEquipmentIdSlot2",
+                unique: true,
+                filter: "[UserEquipmentIdSlot2] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserCharacters_UserId",
+                table: "UserCharacters",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserEquipments_EquipLevelId",
@@ -247,7 +308,7 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 name: "CharacterLevelRequirements");
 
             migrationBuilder.DropTable(
-                name: "UserEquipments");
+                name: "UserCharacters");
 
             migrationBuilder.DropTable(
                 name: "UserItems");
@@ -256,16 +317,19 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 name: "CharacterLevels");
 
             migrationBuilder.DropTable(
-                name: "EquipLevels");
+                name: "UserEquipments");
 
             migrationBuilder.DropTable(
                 name: "Items");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Characters");
 
             migrationBuilder.DropTable(
-                name: "Characters");
+                name: "EquipLevels");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Equips");

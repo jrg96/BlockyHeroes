@@ -19,4 +19,5 @@ public class User
     // Foreign Key Relationships
     public ICollection<UserEquipment> UserEquipment { get; set; }
     public ICollection<UserItem> UserItems { get; set; }
+    public ICollection<UserCharacter> UserCharacters { get; set; }
 }

@@ -207,6 +207,40 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.UserCharacter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CharacterLevelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserEquipmentIdSlot1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserEquipmentIdSlot2")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterLevelId");
+
+                    b.HasIndex("UserEquipmentIdSlot1")
+                        .IsUnique()
+                        .HasFilter("[UserEquipmentIdSlot1] IS NOT NULL");
+
+                    b.HasIndex("UserEquipmentIdSlot2")
+                        .IsUnique()
+                        .HasFilter("[UserEquipmentIdSlot2] IS NOT NULL");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCharacters");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.UserEquipment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -294,6 +328,39 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Navigation("Equip");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.UserCharacter", b =>
+                {
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", "CharacterLevel")
+                        .WithMany("UserCharacters")
+                        .HasForeignKey("CharacterLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.User.UserEquipment", "UserEquipmentSlot1")
+                        .WithOne("UserCharacterSlot1")
+                        .HasForeignKey("BlockyHeroesBackend.Domain.Entities.User.UserCharacter", "UserEquipmentIdSlot1")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.User.UserEquipment", "UserEquipmentSlot2")
+                        .WithOne("UserCharacterSlot2")
+                        .HasForeignKey("BlockyHeroesBackend.Domain.Entities.User.UserCharacter", "UserEquipmentIdSlot2")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.User.User", "Owner")
+                        .WithMany("UserCharacters")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CharacterLevel");
+
+                    b.Navigation("Owner");
+
+                    b.Navigation("UserEquipmentSlot1");
+
+                    b.Navigation("UserEquipmentSlot2");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.UserEquipment", b =>
                 {
                     b.HasOne("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", "EquipLevel")
@@ -340,6 +407,8 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", b =>
                 {
                     b.Navigation("CharacterLevelRequirements");
+
+                    b.Navigation("UserCharacters");
                 });
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.Equip", b =>
@@ -361,9 +430,20 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.User", b =>
                 {
+                    b.Navigation("UserCharacters");
+
                     b.Navigation("UserEquipment");
 
                     b.Navigation("UserItems");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.UserEquipment", b =>
+                {
+                    b.Navigation("UserCharacterSlot1")
+                        .IsRequired();
+
+                    b.Navigation("UserCharacterSlot2")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
