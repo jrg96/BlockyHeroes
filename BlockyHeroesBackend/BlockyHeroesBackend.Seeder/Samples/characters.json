@@ -24,6 +24,26 @@
             }
           }
         ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
       }
     ]
   }

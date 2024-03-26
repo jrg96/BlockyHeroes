@@ -60,7 +60,7 @@ public class UpgradeUserCharacterCommandHandler : IOperationHandler<UpgradeUserC
         IEnumerable<CharacterLevel> coveredCharacterLevels = selectedCharacter.CharacterLevels
             .Where(characterLevel => characterLevel.Level > userCharacter.CharacterLevel.Level)
             .OrderBy(characterLevel => characterLevel.Level)
-            .Take(request.LevelsToUpgrade);
+            .Take(request.LevelsToUpgrade).ToList();
 
         IEnumerable<UserItem> requiredResources = coveredCharacterLevels
             .SelectMany(characterLevel => characterLevel.CharacterLevelRequirements)
@@ -69,7 +69,7 @@ public class UpgradeUserCharacterCommandHandler : IOperationHandler<UpgradeUserC
             {
                 ItemId = group.Key,
                 Quantity = group.Sum(g => g.Quantity)
-            });
+            }).ToList();
 
         bool hasAllResources = requiredResources
             .All(userItem =>
@@ -92,13 +92,13 @@ public class UpgradeUserCharacterCommandHandler : IOperationHandler<UpgradeUserC
         userCharacter.CharacterLevel = targetCharacterLevel;
         await _userCharacterCommandRepository.UpdateAsync(userCharacter);
 
-        foreach(UserItem availableResource in availableResources)
+        foreach(UserItem requiredResource in requiredResources)
         {
-            UserItem requiredResource = requiredResources
-                .FirstOrDefault(reqResource => reqResource.Id == availableResource.Id);
+            UserItem userResource = availableResources
+                .FirstOrDefault(usrRes => usrRes.ItemId == requiredResource.ItemId);
 
-            availableResource.Quantity -= requiredResource.Quantity;
-            await _userItemCommandRepository.UpdateAsync(availableResource);
+            userResource.Quantity -= requiredResource.Quantity;
+            await _userItemCommandRepository.UpdateAsync(userResource);
         }
 
         await _unitOfWork.SaveChangesAsync();
