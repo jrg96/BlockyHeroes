@@ -5,7 +5,6 @@ using BlockyHeroesBackend.Domain.Common.ValueObjects.Common;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
 using BlockyHeroesBackend.Domain.Entities.Equip;
-using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Domain.Repositories;
 using BlockyHeroesBackend.Domain.Repositories.Command;
 using BlockyHeroesBackend.Domain.Repositories.Query;
@@ -49,7 +48,7 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
 
         if (userEquip == null)
         {
-            return GenericInvalidResponse();
+            return OperationResult.GenericInvalidOperation;
         }
 
         // Step 2: After verifying the ownership, calculate if user has the corresponding resources
@@ -64,7 +63,7 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
 
         if (request.Levels > nextLevelsEquips.Count())
         {
-            return GenericInvalidResponse();
+            return OperationResult.GenericInvalidOperation;
         }
 
         long resourcesToUse = nextLevelsEquips
@@ -73,7 +72,7 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
 
         if (user.Coins < resourcesToUse)
         {
-            return GenericInvalidResponse();
+            return OperationResult.GenericInvalidOperation;
         }
 
         // Step 3: After we have validated user has the ownership of the item
@@ -98,15 +97,6 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
         return new OperationResult()
         {
             Success = true,
-        };
-    }
-
-    private OperationResult GenericInvalidResponse()
-    {
-        return new OperationResult()
-        {
-            Success = false,
-            Errors = new List<Error>() { new Error(2, "Invalid Operation") }
         };
     }
 }

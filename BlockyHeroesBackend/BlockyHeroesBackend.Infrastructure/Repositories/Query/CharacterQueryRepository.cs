@@ -1,4 +1,5 @@
-﻿using BlockyHeroesBackend.Domain.Entities.Character;
+﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.Character;
+using BlockyHeroesBackend.Domain.Entities.Character;
 using BlockyHeroesBackend.Domain.Repositories.Query;
 using BlockyHeroesBackend.Infrastructure.Context;
 using BlockyHeroesBackend.Infrastructure.Specifications.Character;
@@ -16,5 +17,11 @@ public class CharacterQueryRepository : GenericQueryRepository<Character>, IChar
     {
         return await Find(new GetAllSpecification())
             .ToListAsync();
+    }
+
+    public async Task<Character?> GetByIdAsync(CharacterId characterId)
+    {
+        return await Find(new GetByCharacterIdSpecification(characterId))
+            .FirstOrDefaultAsync();
     }
 }
