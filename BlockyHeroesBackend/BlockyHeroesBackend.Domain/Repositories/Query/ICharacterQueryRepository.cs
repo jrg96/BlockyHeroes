@@ -4,4 +4,5 @@ namespace BlockyHeroesBackend.Domain.Repositories.Query;
 
 public interface ICharacterQueryRepository : IGenericQueryRepository<Character>
 {
+    Task<IEnumerable<Character>> GetAllAsync();
 }

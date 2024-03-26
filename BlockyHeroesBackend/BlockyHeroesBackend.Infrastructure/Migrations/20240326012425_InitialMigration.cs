@@ -172,7 +172,6 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EquipLevelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },

@@ -21,8 +21,10 @@ public class Application
     private readonly IItemCommandRepository _itemCommandRepository;
     private readonly IItemQueryRepository _itemQueryRepository;
     private readonly ICharacterCommandRepository _characterCommandRepository;
+    private readonly ICharacterQueryRepository _characterQueryRepository;
     private readonly IUserEquipmentCommandRepository _userEquipmentCommandRepository;
     private readonly IUserItemCommandRepository _userItemCommandRepository;
+    private readonly IUserCharacterCommandRepository _userCharacterCommandRepository;
     private readonly IUserCommandRepository _userCommandRepository;
     
     private readonly IUnitOfWork _unitOfWork;
@@ -36,8 +38,10 @@ public class Application
         IItemCommandRepository itemCommandRepository,
         IItemQueryRepository itemQueryRepository,
         ICharacterCommandRepository characterCommandRepository,
+        ICharacterQueryRepository characterQueryRepository,
         IUserEquipmentCommandRepository userEquipmentCommandRepository,
         IUserItemCommandRepository userItemCommandRepository,
+        IUserCharacterCommandRepository userCharacterCommandRepository,
         IUserCommandRepository userCommandRepository,
         IUnitOfWork unitOfWork, 
         IUserSecurityService userSecurityService)
@@ -47,9 +51,12 @@ public class Application
         _itemCommandRepository = itemCommandRepository;
         _itemQueryRepository = itemQueryRepository;
         _characterCommandRepository = characterCommandRepository;
+        _characterQueryRepository = characterQueryRepository;
 
         _userEquipmentCommandRepository = userEquipmentCommandRepository;
         _userItemCommandRepository = userItemCommandRepository;
+        _userCharacterCommandRepository = userCharacterCommandRepository;
+        
 
         _userCommandRepository = userCommandRepository;
         _unitOfWork = unitOfWork;
@@ -77,6 +84,9 @@ public class Application
 
         Console.WriteLine("Creating random items to users");
         await GenerateRandomUserItems();
+
+        Console.WriteLine("Creating random characters to users");
+        await GenerateRandomUserCharacters();
 
         Console.WriteLine("Sample data loaded successfully!");
     }
@@ -235,6 +245,36 @@ public class Application
                 };
 
                 await _userItemCommandRepository.InsertAsync(userItem);
+            }
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    private async Task GenerateRandomUserCharacters()
+    {
+        var characters = await _characterQueryRepository.GetAllAsync();
+
+        foreach(var user in _users)
+        {
+            foreach(var character in characters)
+            {
+                var firstLevel = character.CharacterLevels
+                    .Where(charLevel => charLevel.Level == 1)
+                    .FirstOrDefault();
+
+                UserCharacter userCharacter = new UserCharacter()
+                {
+                    Id = UserCharacterId.CreateUserCharacterId(),
+                    CharacterLevel = firstLevel,
+                    CharacterLevelId = firstLevel.Id,
+                    Owner = user,
+                    UserId = user.Id,
+                    UserEquipmentIdSlot1 = null,
+                    UserEquipmentIdSlot2 = null,
+                };
+
+                await _userCharacterCommandRepository.InsertAsync(userCharacter);
             }
         }
 

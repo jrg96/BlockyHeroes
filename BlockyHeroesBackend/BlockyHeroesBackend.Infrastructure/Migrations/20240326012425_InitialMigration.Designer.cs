@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlockyHeroesBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(BlockyHeroesDbContext))]
-    [Migration("20240326004026_InitialMigration")]
+    [Migration("20240326012425_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -251,9 +251,6 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
 
                     b.Property<Guid>("EquipLevelId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
