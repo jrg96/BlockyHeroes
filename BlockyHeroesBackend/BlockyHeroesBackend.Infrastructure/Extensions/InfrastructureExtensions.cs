@@ -43,7 +43,10 @@ public static class InfrastructureExtensions
 
         service.AddScoped<ICharacterLevelRequirementCommandRepository, CharacterLevelRequirementCommandRepository>();
         service.AddScoped<ICharacterLevelRequirementQueryRepository, CharacterLevelRequirementQueryRepository>();
-        
+
+        service.AddScoped<IUserCharacterCommandRepository, UserCharacterCommandRepository>();
+        service.AddScoped<IUserCharacterQueryRepository, UserCharacterQueryRepository>();
+
         return service;
     }
 }
