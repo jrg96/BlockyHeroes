@@ -25,4 +25,10 @@ public class UserEquipmentQueryRepository : GenericQueryRepository<UserEquipment
         return await Find(new GetByUserEquipmentIdSpecification(id))
             .FirstOrDefaultAsync();
     }
+
+    public async Task<IEnumerable<UserEquipment>> GetByIdBulk(IEnumerable<UserEquipmentId> userEquipmentIds)
+    {
+        return await Find(new GetByUserEquipmentIdBulkSpecification(userEquipmentIds))
+            .ToListAsync();
+    }
 }

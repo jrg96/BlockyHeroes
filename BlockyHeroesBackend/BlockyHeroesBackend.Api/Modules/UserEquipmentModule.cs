@@ -1,4 +1,5 @@
-﻿using BlockyHeroesBackend.Application.Entities.UserEquipment.Commands;
+﻿using BlockyHeroesBackend.Api.Middleware.Authorization;
+using BlockyHeroesBackend.Application.Entities.UserEquipment.Commands;
 using BlockyHeroesBackend.Application.Services;
 using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Presentation.Common;
@@ -20,13 +21,22 @@ public class UserEquipmentModule : BaseModule, ICarterModule
             .Accepts<UpgradeUserEquipmentRequest>("application/json")
             .Produces<TaskResult>(StatusCodes.Status403Forbidden)
             .Produces<TaskResult>(StatusCodes.Status400BadRequest)
-            .Produces<TaskResult>(StatusCodes.Status200OK);
+            .Produces<TaskResult>(StatusCodes.Status200OK)
+            .RequireAuthorization(CustomPoliciesConstants.USER_POLICY_REQUIREMENT);
 
         v1.MapPost("/assign", AssignUserEquipment)
             .Accepts<AssignUserEquipmentRequest>("application/json")
             .Produces<TaskResult>(StatusCodes.Status403Forbidden)
             .Produces<TaskResult>(StatusCodes.Status400BadRequest)
-            .Produces<TaskResult>(StatusCodes.Status200OK);
+            .Produces<TaskResult>(StatusCodes.Status200OK)
+            .RequireAuthorization(CustomPoliciesConstants.USER_POLICY_REQUIREMENT);
+
+        v1.MapPost("/destroy", DestroyUserEquipment)
+            .Accepts<DestroyUserEquipmentRequest>("application/json")
+            .Produces<TaskResult>(StatusCodes.Status403Forbidden)
+            .Produces<TaskResult>(StatusCodes.Status400BadRequest)
+            .Produces<TaskResult>(StatusCodes.Status200OK)
+            .RequireAuthorization(CustomPoliciesConstants.USER_POLICY_REQUIREMENT);
 
     }
 
@@ -67,6 +77,29 @@ public class UserEquipmentModule : BaseModule, ICarterModule
             request.UserCharacterId,
             request.UserEquipmentId,
             request.SlotToEquip));
+
+        if (!result.Success)
+        {
+            return TypedResults.BadRequest(new TaskResult()
+            {
+                Success = false,
+                Errors = result.Errors.Select(e => e.Message)
+            });
+        }
+
+        return TypedResults.Ok(new TaskResult()
+        {
+            Success = true
+        });
+    }
+
+    private async Task<IResult> DestroyUserEquipment(IMediator mediator, HttpContext context, IJwtTokenService jwtTokenService, [FromBody] DestroyUserEquipmentRequest request)
+    {
+        User? user = (User)context.Items["User"];
+
+        var result = await mediator.Send(new DestroyUserEquipmentCommand(
+            user.Id.Value,
+            request.UserEquipmentIds));
 
         if (!result.Success)
         {

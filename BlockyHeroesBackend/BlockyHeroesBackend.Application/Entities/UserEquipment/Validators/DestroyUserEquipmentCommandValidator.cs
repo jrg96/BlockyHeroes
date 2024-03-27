@@ -10,7 +10,14 @@ public class DestroyUserEquipmentCommandValidator : AbstractValidator<DestroyUse
         RuleFor(userEquip => userEquip.UserId)
             .NotNull();
 
-        RuleFor(userEquip => userEquip.UserEquipmentId)
-            .NotNull();
+        RuleFor(userEquip => userEquip.UserEquipmentIds)
+            .NotNull()
+            .Must(NotEmptyArray)
+            .WithMessage("UserEquipmentIds must contain elements");
+    }
+
+    private bool NotEmptyArray(Guid[] ids)
+    {
+        return ids.Count() > 0;
     }
 }
