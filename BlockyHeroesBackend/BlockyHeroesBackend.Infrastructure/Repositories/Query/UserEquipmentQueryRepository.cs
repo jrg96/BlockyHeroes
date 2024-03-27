@@ -19,4 +19,10 @@ public class UserEquipmentQueryRepository : GenericQueryRepository<UserEquipment
         return await Find(new GetByEquipLevelAndUserSpecification(userId, equipLevelId))
             .ToListAsync();
     }
+
+    public async Task<UserEquipment?> GetById(UserEquipmentId id)
+    {
+        return await Find(new GetByUserEquipmentIdSpecification(id))
+            .FirstOrDefaultAsync();
+    }
 }

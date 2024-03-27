@@ -6,5 +6,6 @@ namespace BlockyHeroesBackend.Domain.Repositories.Query;
 
 public interface IUserEquipmentQueryRepository : IGenericQueryRepository<UserEquipment>
 {
+    Task<UserEquipment?> GetById(UserEquipmentId id);
     Task<IEnumerable<UserEquipment>> GetByEquipLevelAndUser(UserId userId, EquipLevelId equipLevelId);
 }

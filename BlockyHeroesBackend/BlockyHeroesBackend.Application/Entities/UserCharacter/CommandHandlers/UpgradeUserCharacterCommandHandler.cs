@@ -37,7 +37,6 @@ public class UpgradeUserCharacterCommandHandler : IOperationHandler<UpgradeUserC
 
     public async Task<OperationResult> Handle(UpgradeUserCharacterCommand request, CancellationToken cancellationToken)
     {
-        
         UserCharacterId userCharacterId = new UserCharacterId(request.UserCharacterId);
         UserId userId = new UserId(request.UserId);
 

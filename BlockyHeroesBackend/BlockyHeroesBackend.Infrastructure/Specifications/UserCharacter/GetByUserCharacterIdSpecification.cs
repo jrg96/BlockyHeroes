@@ -10,6 +10,8 @@ public class GetByUserCharacterIdSpecification : Specification<Domain.Entities.U
         Query
             .Include(userChar => userChar.Owner)
             .Include(userChar => userChar.CharacterLevel)
+            .Include(userChar => userChar.UserEquipmentSlot1)
+            .Include(userChar => userChar.UserEquipmentSlot2)
             .Where(userChar => userChar.Id == id);
     }
 }
