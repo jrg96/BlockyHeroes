@@ -16,7 +16,11 @@ public class UserCharacterModule : BaseModule, ICarterModule
         RouteGroupBuilder userCharGroup = CreateApiVersions(app, "user/character");
         var v1 = userCharGroup.MapGroup("").HasApiVersion(1);
 
-        v1.MapPost("/upgrade", UpgradeUserCharacter);
+        v1.MapPost("/upgrade", UpgradeUserCharacter)
+            .Accepts<UpgradeUserCharacterRequest>("application/json")
+            .Produces<TaskResult>(StatusCodes.Status400BadRequest)
+            .Produces<TaskResult>(StatusCodes.Status403Forbidden)
+            .Produces<TaskResult>(StatusCodes.Status200OK);
     }
 
     /*
@@ -36,6 +40,7 @@ public class UserCharacterModule : BaseModule, ICarterModule
             return TypedResults.BadRequest(new TaskResult()
             {
                 Success = false,
+                Errors = result.Errors.Select(e => e.Message)
             });
         }
 

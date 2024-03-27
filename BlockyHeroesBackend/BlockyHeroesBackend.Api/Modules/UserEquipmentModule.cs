@@ -1,5 +1,5 @@
 ﻿using BlockyHeroesBackend.Application.Entities.UserEquipment.Commands;
-using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
+using BlockyHeroesBackend.Application.Services;
 using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Presentation.Common;
 using BlockyHeroesBackend.Presentation.RequestResponse.UserEquipment;
@@ -19,7 +19,14 @@ public class UserEquipmentModule : BaseModule, ICarterModule
         v1.MapPost("/upgrade", UpgradeEquipment)
             .Accepts<UpgradeUserEquipmentRequest>("application/json")
             .Produces<TaskResult>(StatusCodes.Status403Forbidden)
-            .Produces<TaskResult>(StatusCodes.Status400BadRequest);
+            .Produces<TaskResult>(StatusCodes.Status400BadRequest)
+            .Produces<TaskResult>(StatusCodes.Status200OK);
+
+        v1.MapPost("/assign", AssignUserEquipment)
+            .Accepts<AssignUserEquipmentRequest>("application/json")
+            .Produces<TaskResult>(StatusCodes.Status403Forbidden)
+            .Produces<TaskResult>(StatusCodes.Status400BadRequest)
+            .Produces<TaskResult>(StatusCodes.Status200OK);
 
     }
 
@@ -48,6 +55,31 @@ public class UserEquipmentModule : BaseModule, ICarterModule
         return TypedResults.Ok(new TaskResult()
         {
             Success = true,
+        });
+    }
+
+    private async Task<IResult> AssignUserEquipment(IMediator mediator, HttpContext context, IJwtTokenService jwtTokenService, [FromBody] AssignUserEquipmentRequest request)
+    {
+        User user = (User)context.Items["User"];
+
+        var result = await mediator.Send(new AssignUserEquipmentCommand(
+            user.Id.Value,
+            request.UserCharacterId,
+            request.UserEquipmentId,
+            request.SlotToEquip));
+
+        if (!result.Success)
+        {
+            return TypedResults.BadRequest(new TaskResult()
+            {
+                Success = false,
+                Errors = result.Errors.Select(e => e.Message)
+            });
+        }
+
+        return TypedResults.Ok(new TaskResult()
+        {
+            Success = true
         });
     }
 }
