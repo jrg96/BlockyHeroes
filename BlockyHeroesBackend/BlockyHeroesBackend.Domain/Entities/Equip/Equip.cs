@@ -1,4 +1,5 @@
-﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
+﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.Common;
+using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
 
 namespace BlockyHeroesBackend.Domain.Entities.Equip;
 
@@ -10,6 +11,7 @@ namespace BlockyHeroesBackend.Domain.Entities.Equip;
 public class Equip
 {
     public EquipId Id { get; set; }
+    public ItemRarity Rarity { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
 

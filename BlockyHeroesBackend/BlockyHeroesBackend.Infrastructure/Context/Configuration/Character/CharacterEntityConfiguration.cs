@@ -1,4 +1,5 @@
 ﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.Character;
+using BlockyHeroesBackend.Domain.Common.ValueObjects.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,6 +18,10 @@ public class CharacterEntityConfiguration : IEntityTypeConfiguration<Domain.Enti
             .HasMaxLength(100);
 
         builder
+            .Property(character => character.Rarity)
+            .IsRequired();
+
+        builder
             .Property (character => character.Description)
             .IsRequired()
             .HasMaxLength(500);
@@ -27,5 +32,11 @@ public class CharacterEntityConfiguration : IEntityTypeConfiguration<Domain.Enti
             .HasConversion(
                 id => id.Id,
                 value => new CharacterId(value));
+
+        builder
+            .Property(character => character.Rarity)
+            .HasConversion(
+                rarity => rarity.Id,
+                value => ItemRarity.Get(value));
     }
 }

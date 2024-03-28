@@ -2,7 +2,10 @@
   {
     "Name": "The Boy",
     "Description": "Isekai'd into this world, he has to jump to get outta here",
-
+    "Rarity": {
+      "Id": 1,
+      "Name":  "Super Super Rare"
+    },
     "CharacterLevels": [
       {
         "Level": 1,

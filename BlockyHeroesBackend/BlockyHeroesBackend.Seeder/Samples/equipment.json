@@ -2,6 +2,10 @@
   {
     "Name": "Sleipnir Shoes",
     "Description": "The shoes of the humble Sleipnir, it's been told they make you faster",
+    "Rarity": {
+      "Id": 1,
+      "Name": "Super Super Rare"
+    },
     "EquipmentEvolutions": [
       {
         "Level": 1,
@@ -36,6 +40,10 @@
   {
     "Name": "The Green Armor",
     "Description": "Belongs to a legendary defender, an armor never destroyed",
+    "Rarity": {
+      "Id": 1,
+      "Name": "Super Super Rare"
+    },
     "EquipmentEvolutions": [
       {
         "Level": 1,
@@ -70,6 +78,10 @@
   {
     "Name": "Moon Walk",
     "Description": "A cape that makes you feel you're walking on the moon!",
+    "Rarity": {
+      "Id": 2,
+      "Name": "Super Rare"
+    },
     "EquipmentEvolutions": [
       {
         "Level": 1,
@@ -104,6 +116,10 @@
   {
     "Name": "Icarus Belt",
     "Description": "The belt of Icarus, makes you have wings!, or something like that..",
+    "Rarity": {
+      "Id": 3,
+      "Name": "Rare"
+    },
     "EquipmentEvolutions": [
       {
         "Level": 1,

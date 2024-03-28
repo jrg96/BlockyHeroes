@@ -1,4 +1,5 @@
-﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
+﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.Common;
+using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,5 +18,11 @@ public class EquipEntityConfiguration : IEntityTypeConfiguration<Domain.Entities
             .HasConversion(
                 id => id.Id,
                 value => new EquipId(value));
+
+        builder
+            .Property(equip => equip.Rarity)
+            .HasConversion(
+                rarity => rarity.Id,
+                value => ItemRarity.Get(value));
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlockyHeroesBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(BlockyHeroesDbContext))]
-    [Migration("20240326012425_InitialMigration")]
+    [Migration("20240328014611_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -39,6 +39,9 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -107,6 +110,9 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

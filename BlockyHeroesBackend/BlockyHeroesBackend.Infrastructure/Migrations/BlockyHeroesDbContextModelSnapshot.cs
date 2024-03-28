@@ -37,6 +37,9 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Characters");
@@ -104,6 +107,9 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
