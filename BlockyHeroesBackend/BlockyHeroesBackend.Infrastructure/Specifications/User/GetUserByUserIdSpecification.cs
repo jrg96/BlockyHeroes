@@ -8,6 +8,8 @@ public class GetUserByUserIdSpecification : Specification<Domain.Entities.User.U
     public GetUserByUserIdSpecification(UserId userId)
     {
         Query
+            .Include(user => user.UserItems)
+                .ThenInclude(userItem => userItem.Item)
             .Where(user => user.Id == userId);
     }
 }

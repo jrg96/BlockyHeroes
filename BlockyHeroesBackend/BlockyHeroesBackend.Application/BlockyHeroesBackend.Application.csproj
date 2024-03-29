@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Entities\Banner\Validators\" />
+    <Folder Include="Entities\Banner\QueryHandlers\" />
+    <Folder Include="Entities\Banner\Queries\" />
     <Folder Include="Entities\UserCharacter\QueryHandlers\" />
     <Folder Include="Entities\UserCharacter\Queries\" />
     <Folder Include="Entities\UserEquipment\QueryHandlers\" />
