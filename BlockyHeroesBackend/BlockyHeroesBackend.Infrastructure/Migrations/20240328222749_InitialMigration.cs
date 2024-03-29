@@ -40,6 +40,22 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GachaBanners",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GachaBanners", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
@@ -118,6 +134,26 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BannerDropRates",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Rarity = table.Column<int>(type: "int", nullable: false),
+                    DropRate = table.Column<float>(type: "real", nullable: false),
+                    GachaBannerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BannerDropRates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BannerDropRates_GachaBanners_GachaBannerId",
+                        column: x => x.GachaBannerId,
+                        principalTable: "GachaBanners",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserItems",
                 columns: table => new
                 {
@@ -165,6 +201,32 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                         name: "FK_CharacterLevelRequirements_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GachaBannerCharacter",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RateUp = table.Column<float>(type: "real", nullable: false),
+                    GachaBannerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CharacterLevelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GachaBannerCharacter", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GachaBannerCharacter_CharacterLevels_CharacterLevelId",
+                        column: x => x.CharacterLevelId,
+                        principalTable: "CharacterLevels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GachaBannerCharacter_GachaBanners_GachaBannerId",
+                        column: x => x.GachaBannerId,
+                        principalTable: "GachaBanners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -232,6 +294,11 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BannerDropRates_GachaBannerId",
+                table: "BannerDropRates",
+                column: "GachaBannerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CharacterLevelRequirements_CharacterLevelId",
                 table: "CharacterLevelRequirements",
                 column: "CharacterLevelId");
@@ -250,6 +317,16 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 name: "IX_EquipLevels_EquipId",
                 table: "EquipLevels",
                 column: "EquipId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GachaBannerCharacter_CharacterLevelId",
+                table: "GachaBannerCharacter",
+                column: "CharacterLevelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GachaBannerCharacter_GachaBannerId",
+                table: "GachaBannerCharacter",
+                column: "GachaBannerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserCharacters_CharacterLevelId",
@@ -306,13 +383,22 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BannerDropRates");
+
+            migrationBuilder.DropTable(
                 name: "CharacterLevelRequirements");
+
+            migrationBuilder.DropTable(
+                name: "GachaBannerCharacter");
 
             migrationBuilder.DropTable(
                 name: "UserCharacters");
 
             migrationBuilder.DropTable(
                 name: "UserItems");
+
+            migrationBuilder.DropTable(
+                name: "GachaBanners");
 
             migrationBuilder.DropTable(
                 name: "CharacterLevels");

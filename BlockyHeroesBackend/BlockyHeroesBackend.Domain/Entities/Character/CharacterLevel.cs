@@ -1,4 +1,5 @@
 ﻿using BlockyHeroesBackend.Domain.Common.ValueObjects.Character;
+using BlockyHeroesBackend.Domain.Entities.Banner;
 using BlockyHeroesBackend.Domain.Entities.User;
 
 namespace BlockyHeroesBackend.Domain.Entities.Character;
@@ -17,4 +18,5 @@ public class CharacterLevel
 
     public ICollection<CharacterLevelRequirement> CharacterLevelRequirements { get; set; }
     public ICollection<UserCharacter> UserCharacters { get; set; }
+    public ICollection<GachaBannerCharacter> GachaBannerCharacters { get; set; }
 }

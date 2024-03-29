@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlockyHeroesBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(BlockyHeroesDbContext))]
-    [Migration("20240328014611_InitialMigration")]
+    [Migration("20240328222749_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -24,6 +24,78 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Banner.BannerDropRate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("DropRate")
+                        .HasColumnType("real");
+
+                    b.Property<Guid>("GachaBannerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GachaBannerId");
+
+                    b.ToTable("BannerDropRates");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Banner.GachaBanner", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GachaBanners");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Banner.GachaBannerCharacter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CharacterLevelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GachaBannerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("RateUp")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterLevelId");
+
+                    b.HasIndex("GachaBannerId");
+
+                    b.ToTable("GachaBannerCharacter");
+                });
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.Character", b =>
                 {
@@ -293,6 +365,36 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.ToTable("UserItems");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Banner.BannerDropRate", b =>
+                {
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Banner.GachaBanner", "GachaBanner")
+                        .WithMany("DropRates")
+                        .HasForeignKey("GachaBannerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GachaBanner");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Banner.GachaBannerCharacter", b =>
+                {
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", "CharacterLevel")
+                        .WithMany("GachaBannerCharacters")
+                        .HasForeignKey("CharacterLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Banner.GachaBanner", "GachaBanner")
+                        .WithMany("GachaBannerCharacters")
+                        .HasForeignKey("GachaBannerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CharacterLevel");
+
+                    b.Navigation("GachaBanner");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", b =>
                 {
                     b.HasOne("BlockyHeroesBackend.Domain.Entities.Character.Character", "Character")
@@ -405,6 +507,13 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Banner.GachaBanner", b =>
+                {
+                    b.Navigation("DropRates");
+
+                    b.Navigation("GachaBannerCharacters");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.Character", b =>
                 {
                     b.Navigation("CharacterLevels");
@@ -413,6 +522,8 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", b =>
                 {
                     b.Navigation("CharacterLevelRequirements");
+
+                    b.Navigation("GachaBannerCharacters");
 
                     b.Navigation("UserCharacters");
                 });

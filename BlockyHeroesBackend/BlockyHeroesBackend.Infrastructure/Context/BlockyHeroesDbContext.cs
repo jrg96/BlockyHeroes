@@ -1,4 +1,5 @@
-﻿using BlockyHeroesBackend.Domain.Entities.Character;
+﻿using BlockyHeroesBackend.Domain.Entities.Banner;
+using BlockyHeroesBackend.Domain.Entities.Character;
 using BlockyHeroesBackend.Domain.Entities.Equip;
 using BlockyHeroesBackend.Domain.Entities.Item;
 using BlockyHeroesBackend.Domain.Entities.User;
@@ -22,6 +23,9 @@ public class BlockyHeroesDbContext : DbContext, IBlockyHeroesDbContext
     public DbSet<CharacterLevelRequirement> CharacterLevelRequirements { get; set; }
 
     public DbSet<Item> Items { get; set; }
+
+    public DbSet<GachaBanner> GachaBanners { get; set; }
+    public DbSet<BannerDropRate> BannerDropRates { get; set; }
 
     public BlockyHeroesDbContext(DbContextOptions<BlockyHeroesDbContext> options) : base(options)
     {
