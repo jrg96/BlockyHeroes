@@ -14,4 +14,5 @@ public class GachaBanner
     // Foreign key references
     public ICollection<BannerDropRate> DropRates { get; set; }
     public ICollection<GachaBannerCharacter> GachaBannerCharacters { get; set; }
+    public ICollection<GachaBannerCurrency> GachaBannerCurrencies { get; set; }
 }

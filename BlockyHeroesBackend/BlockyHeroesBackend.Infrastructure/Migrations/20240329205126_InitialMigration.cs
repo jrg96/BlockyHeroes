@@ -154,6 +154,32 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GachaBannerCurrency",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuantityPerPull = table.Column<int>(type: "int", nullable: false),
+                    GachaBannerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GachaBannerCurrency", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GachaBannerCurrency_GachaBanners_GachaBannerId",
+                        column: x => x.GachaBannerId,
+                        principalTable: "GachaBanners",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GachaBannerCurrency_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserItems",
                 columns: table => new
                 {
@@ -329,6 +355,16 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 column: "GachaBannerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GachaBannerCurrency_GachaBannerId",
+                table: "GachaBannerCurrency",
+                column: "GachaBannerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GachaBannerCurrency_ItemId",
+                table: "GachaBannerCurrency",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserCharacters_CharacterLevelId",
                 table: "UserCharacters",
                 column: "CharacterLevelId");
@@ -390,6 +426,9 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "GachaBannerCharacter");
+
+            migrationBuilder.DropTable(
+                name: "GachaBannerCurrency");
 
             migrationBuilder.DropTable(
                 name: "UserCharacters");

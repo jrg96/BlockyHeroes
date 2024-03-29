@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlockyHeroesBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(BlockyHeroesDbContext))]
-    [Migration("20240328222749_InitialMigration")]
+    [Migration("20240329205126_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -95,6 +95,29 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.HasIndex("GachaBannerId");
 
                     b.ToTable("GachaBannerCharacter");
+                });
+
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Banner.GachaBannerCurrency", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GachaBannerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("QuantityPerPull")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GachaBannerId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("GachaBannerCurrency");
                 });
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.Character", b =>
@@ -395,6 +418,25 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Navigation("GachaBanner");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Banner.GachaBannerCurrency", b =>
+                {
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Banner.GachaBanner", "GachaBanner")
+                        .WithMany("GachaBannerCurrencies")
+                        .HasForeignKey("GachaBannerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Item.Item", "Item")
+                        .WithMany("GachaBannerCurrencies")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GachaBanner");
+
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", b =>
                 {
                     b.HasOne("BlockyHeroesBackend.Domain.Entities.Character.Character", "Character")
@@ -512,6 +554,8 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Navigation("DropRates");
 
                     b.Navigation("GachaBannerCharacters");
+
+                    b.Navigation("GachaBannerCurrencies");
                 });
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Character.Character", b =>
@@ -541,6 +585,8 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Item.Item", b =>
                 {
                     b.Navigation("CharacterLevelRequirements");
+
+                    b.Navigation("GachaBannerCurrencies");
 
                     b.Navigation("UserItems");
                 });
