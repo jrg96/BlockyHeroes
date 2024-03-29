@@ -47,6 +47,15 @@ public static class InfrastructureExtensions
         service.AddScoped<IUserCharacterCommandRepository, UserCharacterCommandRepository>();
         service.AddScoped<IUserCharacterQueryRepository, UserCharacterQueryRepository>();
 
+        service.AddScoped<IGachaBannerCommandRepository, GachaBannerCommandRepository>();
+        service.AddScoped<IGachaBannerQueryRepository, GachaBannerQueryRepository>();
+
+        service.AddScoped<IBannerDropRateCommandRepository, BannerDropRateCommandRepository>();
+        service.AddScoped<IBannerDropRateQueryRepository, BannerDropRateQueryRepository>();
+
+        service.AddScoped<IGachaBannerCharacterCommandRepository, GachaBannerCharacterCommandRepository>();
+        service.AddScoped<IGachaBannerCharacterQueryRepository, GachaBannerCharacterQueryRepository>();
+
         return service;
     }
 }
