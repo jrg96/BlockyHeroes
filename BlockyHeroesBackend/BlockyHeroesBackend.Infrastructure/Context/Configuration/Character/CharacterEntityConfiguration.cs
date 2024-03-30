@@ -38,5 +38,11 @@ public class CharacterEntityConfiguration : IEntityTypeConfiguration<Domain.Enti
             .HasConversion(
                 rarity => rarity.Id,
                 value => ItemRarity.Get(value));
+
+        builder
+            .Property(character => character.GachaType)
+            .HasConversion(
+                gachaType => gachaType.Id,
+                value => GachaType.Get(value));
     }
 }
