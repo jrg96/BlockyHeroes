@@ -2,8 +2,12 @@
 using BlockyHeroesBackend.Application.Common;
 using BlockyHeroesBackend.Application.Entities.Banner.Commands;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Banner;
+using BlockyHeroesBackend.Domain.Common.ValueObjects.Banner.RandomWeightedPicker;
+using BlockyHeroesBackend.Domain.Common.ValueObjects.Character;
+using BlockyHeroesBackend.Domain.Common.ValueObjects.Common;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
 using BlockyHeroesBackend.Domain.Entities.Banner;
+using BlockyHeroesBackend.Domain.Entities.Character;
 using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Domain.Repositories.Query;
 
@@ -13,15 +17,19 @@ public class GachaPullCommandHandler : IOperationHandler<GachaPullCommand, IEnum
 {
     private readonly IGachaBannerQueryRepository _gachaBannerQueryRepository;
     private readonly IUserQueryRepository _userQueryRepository;
+    private readonly ICharacterLevelQueryRepository _characterLevelQueryRepository;
 
     public GachaPullCommandHandler(
         IGachaBannerQueryRepository gachaBannerQueryRepository, 
-        IUserQueryRepository userQueryRepository)
+        IUserQueryRepository userQueryRepository,
+        ICharacterLevelQueryRepository characterLevelQueryRepository)
     {
         _gachaBannerQueryRepository = gachaBannerQueryRepository;
         _userQueryRepository = userQueryRepository;
-
+        _characterLevelQueryRepository = characterLevelQueryRepository;
     }
+
+    public GachaType GachaType { get; private set; }
 
     public async Task<OperationResult<IEnumerable<Domain.Entities.User.UserCharacter>>> Handle(GachaPullCommand request, CancellationToken cancellationToken)
     {
@@ -56,6 +64,31 @@ public class GachaPullCommandHandler : IOperationHandler<GachaPullCommand, IEnum
         // Step 3: After verifying banner and resource availability
         // Proceed to do gacha pull
 
+        // Build consolidated list of possible characters
+        // By default, permanent pool has a weight = 1 to appear
+        IEnumerable<WeightedCharacter> selectionPool = WeightedCharacter
+            .CreateWeightedCharacters(
+                await _characterLevelQueryRepository.GetByCharacterLevelAndGachaTypeAsync(1, GachaType.PermanentPool), 
+                1)
+            .Union(bannerToPullFrom.GachaBannerCharacters
+                .Select(exclusiveCharacter => 
+                    WeightedCharacter.CreateWeightedCharacter(
+                            exclusiveCharacter.CharacterLevelId,
+                            exclusiveCharacter.CharacterLevel.Character.Rarity,
+                            (int)exclusiveCharacter.RateUp)));
+
+        Dictionary<ItemRarity, float> rarityDropRates = bannerToPullFrom
+            .DropRates
+            .ToList()
+            .ToDictionary(dropRate => dropRate.Rarity, dropRate => dropRate.DropRate);
+
+        RandomWeightedPicker<WeightedCharacter> picker = 
+            new RandomWeightedPicker<WeightedCharacter>(
+                    selectionPool, 
+                    rarityDropRates);
+
+        // Perform Gacha Pull
+        IEnumerable<WeightedCharacter> pulls = picker.PickItems(request.NumberOfPulls);
 
         return OperationResult<IEnumerable<Domain.Entities.User.UserCharacter>>.GenericSuccess;
     }

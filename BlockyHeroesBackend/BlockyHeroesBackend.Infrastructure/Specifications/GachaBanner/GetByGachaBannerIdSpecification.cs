@@ -10,6 +10,9 @@ public class GetByGachaBannerIdSpecification : Specification<Domain.Entities.Ban
         Query
             .Include(gachaBanner => gachaBanner.GachaBannerCurrencies)
                 .ThenInclude(item => item.Item)
+            .Include(gachaBanner => gachaBanner.GachaBannerCharacters)
+                .ThenInclude(character => character.CharacterLevel)
+                .ThenInclude(characterLevel => characterLevel.Character)
             .Where(gachaBanner => gachaBanner.Id == gachaBannerId);
     }
 }
