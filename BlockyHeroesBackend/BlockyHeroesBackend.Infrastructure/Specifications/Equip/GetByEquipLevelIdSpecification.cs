@@ -9,6 +9,8 @@ public class GetByEquipLevelIdSpecification : Specification<Domain.Entities.Equi
     {
         Query
             .Include(equip => equip.EquipmentEvolutions)
+                .ThenInclude(equipLevel => equipLevel.EquipLevelRequirements)
+                    .ThenInclude(requirement => requirement.Item)
             .Where(equip => 
                 equip.EquipmentEvolutions
                     .Any(equipLevel => equipLevel.Id == equipLevelId));

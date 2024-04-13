@@ -5,6 +5,7 @@ using BlockyHeroesBackend.Domain.Common.ValueObjects.Common;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
 using BlockyHeroesBackend.Domain.Entities.Equip;
+using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Domain.Repositories;
 using BlockyHeroesBackend.Domain.Repositories.Command;
 using BlockyHeroesBackend.Domain.Repositories.Query;
@@ -17,6 +18,8 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
 
     private readonly IUserEquipmentCommandRepository _userEquipmentCommandRepository;
     private readonly IUserEquipmentQueryRepository _userEquipmentQueryRepository;
+    private readonly IUserItemCommandRepository _userItemCommandRepository;
+    private readonly IUserItemQueryRepository _userItemQueryRepository;
 
     private readonly IEquipQueryRepository _equipQueryRepository;
     private readonly IUserCommandRepository _userCommandRepository;
@@ -24,12 +27,16 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
     public UpgradeEquipmentCommandHandler(
         IUnitOfWork unitOfWork,
         IUserEquipmentCommandRepository userEquipmentCommandRepository, 
-        IUserEquipmentQueryRepository userEquipmentQueryRepository, 
+        IUserEquipmentQueryRepository userEquipmentQueryRepository,
+        IUserItemCommandRepository userItemCommandRepository,
+        IUserItemQueryRepository userItemQueryRepository,
         IEquipQueryRepository equipQueryRepository,
         IUserCommandRepository userCommandRepository)
     {
         _userEquipmentCommandRepository = userEquipmentCommandRepository;
         _userEquipmentQueryRepository = userEquipmentQueryRepository;
+        _userItemCommandRepository = userItemCommandRepository;
+        _userItemQueryRepository = userItemQueryRepository;
         _equipQueryRepository = equipQueryRepository;
         _userCommandRepository = userCommandRepository;
         _unitOfWork = unitOfWork;
@@ -53,6 +60,8 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
 
         // Step 2: After verifying the ownership, calculate if user has the corresponding resources
         Domain.Entities.User.User? user = userEquip.Owner;
+        IEnumerable<UserItem> userItems = await _userItemQueryRepository.GetByUserId(user.Id);
+
         Equip? equip = await _equipQueryRepository.GetByEquipLevelId(new EquipLevelId(request.EquipLevelId));
         EquipLevel? currentLevelEquip = equip.EquipmentEvolutions
             .Where(equipLevel => equipLevel.Id == equipLevelId)
@@ -66,18 +75,39 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
             return OperationResult.GenericInvalidOperation;
         }
 
-        long resourcesToUse = nextLevelsEquips
+        IEnumerable<UserItem> requiredResources = nextLevelsEquips
             .Take(request.Levels)
-            .Sum(levelEquip => levelEquip.CoinsToPromote);
+            .SelectMany(equipLevel => equipLevel.EquipLevelRequirements)
+            .GroupBy(requirement => requirement.Item.Id)
+            .Select(group => new UserItem
+            {
+                ItemId = group.Key,
+                Quantity = group.Sum(gr => gr.Quantity)
+            })
+            .ToList();
 
-        if (user.Coins < resourcesToUse)
+        bool hasEnoughResources = requiredResources
+            .All(resource =>
+            {
+                return userItems
+                    .Any(userItem => userItem.ItemId == resource.ItemId
+                        && userItem.Quantity >= resource.Quantity);
+            });
+
+        if (!hasEnoughResources)
         {
             return OperationResult.GenericInvalidOperation;
         }
 
         // Step 3: After we have validated user has the ownership of the item
         // and the resources to complete the enhacement, we proceed with the transaction
-        user.Coins -= resourcesToUse;
+        foreach (UserItem requiredResource in requiredResources)
+        {
+            UserItem userResource = userItems
+                .First(userItem => userItem.ItemId == requiredResource.ItemId);
+            userResource.Quantity -= requiredResource.Quantity;
+            await _userItemCommandRepository.UpdateAsync(userResource);
+        }
 
         // Verify if user already has the equipment at the new level
         // and if not, create a new entity
@@ -90,7 +120,6 @@ public class UpgradeEquipmentCommandHandler : IOperationHandler<UpgradeEquipment
         userEquip.EquipLevelId = desiredEquip.Id;
 
         // Execute the operations
-        await _userCommandRepository.UpdateAsync(user);
         await _userEquipmentCommandRepository.UpdateAsync(userEquip);
         await _unitOfWork.SaveChangesAsync();
 
