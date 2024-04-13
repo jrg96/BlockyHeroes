@@ -19,21 +19,45 @@
         "CoinsToPromote": 100,
         "Lives": 0,
         "JumpForce": 0.0,
-        "HorizontalSpeed": 0.1
+        "HorizontalSpeed": 0.1,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 100,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       },
       {
         "Level": 3,
         "CoinsToPromote": 200,
         "Lives": 0,
         "JumpForce": 0.0,
-        "HorizontalSpeed": 0.12
+        "HorizontalSpeed": 0.12,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 200,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       },
       {
         "Level": 4,
         "CoinsToPromote": 500,
         "Lives": 0,
         "JumpForce": 0.0,
-        "HorizontalSpeed": 0.12
+        "HorizontalSpeed": 0.12,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 500,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       }
     ]
   },
@@ -57,21 +81,45 @@
         "CoinsToPromote": 100,
         "Lives": 0,
         "JumpForce": 0.0,
-        "HorizontalSpeed": 0.0
+        "HorizontalSpeed": 0.0,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 100,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       },
       {
         "Level": 3,
         "CoinsToPromote": 200,
         "Lives": 0,
         "JumpForce": 0.0,
-        "HorizontalSpeed": 0.0
+        "HorizontalSpeed": 0.0,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 200,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       },
       {
         "Level": 4,
         "CoinsToPromote": 500,
         "Lives": 1,
         "JumpForce": 0.0,
-        "HorizontalSpeed": 0.0
+        "HorizontalSpeed": 0.0,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 500,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       }
     ]
   },
@@ -95,21 +143,45 @@
         "CoinsToPromote": 100,
         "Lives": 0,
         "JumpForce": 0.2,
-        "HorizontalSpeed": 0.0
+        "HorizontalSpeed": 0.0,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 100,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       },
       {
         "Level": 3,
         "CoinsToPromote": 200,
         "Lives": 0,
         "JumpForce": 0.3,
-        "HorizontalSpeed": 0.0
+        "HorizontalSpeed": 0.0,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 200,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       },
       {
         "Level": 4,
         "CoinsToPromote": 500,
         "Lives": 0,
         "JumpForce": 0.5,
-        "HorizontalSpeed": 0.0
+        "HorizontalSpeed": 0.0,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 500,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       }
     ]
   },
@@ -133,21 +205,45 @@
         "CoinsToPromote": 100,
         "Lives": 0,
         "JumpForce": 0.1,
-        "HorizontalSpeed": 0.1
+        "HorizontalSpeed": 0.1,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 100,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       },
       {
         "Level": 3,
         "CoinsToPromote": 200,
         "Lives": 0,
         "JumpForce": 0.2,
-        "HorizontalSpeed": 0.12
+        "HorizontalSpeed": 0.12,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 200,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       },
       {
         "Level": 4,
         "CoinsToPromote": 500,
         "Lives": 0,
         "JumpForce": 0.2,
-        "HorizontalSpeed": 0.14
+        "HorizontalSpeed": 0.14,
+        "EquipLevelRequirements": [
+          {
+            "Quantity": 500,
+            "Item": {
+              "Name": "Coins"
+            }
+          }
+        ]
       }
     ]
   }

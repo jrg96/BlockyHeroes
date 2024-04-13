@@ -76,11 +76,11 @@ public class Application
         Console.WriteLine("Building user list");
         await LoadUsers();
 
-        Console.WriteLine("Building Equipment List");
-        await LoadEquips();
-
         Console.WriteLine("Building Item List");
         await LoadItems();
+
+        Console.WriteLine("Building Equipment List");
+        await LoadEquips();
 
         Console.WriteLine("Building Character List");
         await LoadCharacters();
@@ -131,6 +131,7 @@ public class Application
 
     private async Task LoadEquips()
     {
+        var items = await _itemQueryRepository.GetAllAsync();
         string data = File.ReadAllText("Samples/equipment.json");
         var equips = JsonSerializer.Deserialize<List<Equip>>(data);
         
@@ -140,6 +141,16 @@ public class Application
             foreach (var equipLevel in eq.EquipmentEvolutions)
             {
                 equipLevel.Id = EquipLevelId.CreateEquipId();
+
+                if (equipLevel.EquipLevelRequirements != null)
+                {
+                    foreach (var requirement in equipLevel.EquipLevelRequirements)
+                    {
+                        requirement.Id = EquipLevelRequirementId.CreateEquipLevelRequirementId();
+                        requirement.Item = items.First(item => item.Name.ToLower() == requirement.Item.Name.ToLower());
+                        requirement.ItemId = requirement.Item.Id;
+                    }
+                }
             }
 
             await _equipCommandRepository.InsertAsync(eq);
