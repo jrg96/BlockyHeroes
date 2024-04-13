@@ -1,0 +1,56 @@
+[
+  {
+    "Name": "Normal Gacha Banner",
+    "Description": "The normal gacha banner that is available all the time",
+    "StartDate": "2020-04-01T18:25:43.511Z",
+    "EndDate": "3000-04-01T18:25:43.511Z",
+    "Type": {
+      "Id": 1,
+      "Name": "Character"
+    },
+    "DropRates": [
+      {
+        "Rarity": {
+          "Id": 1,
+          "Name": "Super Super Rare"
+        },
+        "DropRate": 0.07
+      },
+      {
+        "Rarity": {
+          "Id": 2,
+          "Name": "Super Rare"
+        },
+        "DropRate": 0.15
+      },
+      {
+        "Rarity": {
+          "Id": 3,
+          "Name": "Rare"
+        },
+        "DropRate": 0.28
+      },
+      {
+        "Rarity": {
+          "Id": 4,
+          "Name": "Common"
+        },
+        "DropRate": 0.50
+      }
+    ],
+    "GachaBannerCurrencies": [
+      {
+        "QuantityPerPull": 15,
+        "Item": {
+          "Name": "Coins"
+        }
+      },
+      {
+        "QuantityPerPull": 3,
+        "Item": {
+          "Name": "Apples"
+        }
+      }
+    ]
+  }
+]

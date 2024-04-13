@@ -4,7 +4,616 @@
     "Description": "Isekai'd into this world, he has to jump to get outta here",
     "Rarity": {
       "Id": 1,
-      "Name":  "Super Super Rare"
+      "Name": "Super Super Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Boy 2",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 1,
+      "Name": "Super Super Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Boy 3",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 1,
+      "Name": "Super Super Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Super Rare Boy",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 2,
+      "Name": "Super Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Super Rare Boy 2",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 2,
+      "Name": "Super Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Super Rare Boy 3",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 2,
+      "Name": "Super Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Rare Boy",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 3,
+      "Name": "Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Rare Boy 2",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 3,
+      "Name": "Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Rare Boy 3",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 3,
+      "Name": "Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Common Boy",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 4,
+      "Name": "Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Common Boy 2",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 4,
+      "Name": "Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
+    },
+    "CharacterLevels": [
+      {
+        "Level": 1,
+        "Lives": 2,
+        "JumpForce": 2.0,
+        "HorizontalSpeed": 5,
+        "CharacterLevelRequirements": []
+      },
+      {
+        "Level": 2,
+        "Lives": 2,
+        "JumpForce": 2.05,
+        "HorizontalSpeed": 5.1,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 10,
+            "Item": {
+              "Name": "Apples"
+            }
+          }
+        ]
+      },
+      {
+        "Level": 3,
+        "Lives": 2,
+        "JumpForce": 2.10,
+        "HorizontalSpeed": 5.2,
+        "CharacterLevelRequirements": [
+          {
+            "Quantity": 20,
+            "Item": {
+              "Name": "Apples"
+            }
+          },
+          {
+            "Quantity": 5,
+            "Item": {
+              "Name": "Shard of the mighty boy"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "The Common Boy 3",
+    "Description": "Isekai'd into this world, he has to jump to get outta here",
+    "Rarity": {
+      "Id": 4,
+      "Name": "Rare"
+    },
+    "GachaType": {
+      "Id": 1,
+      "Name": "Permanent Pool"
     },
     "CharacterLevels": [
       {

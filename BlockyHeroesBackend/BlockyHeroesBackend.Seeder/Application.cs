@@ -1,8 +1,10 @@
 ﻿using BlockyHeroesBackend.Application.Services;
+using BlockyHeroesBackend.Domain.Common.ValueObjects.Banner;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Character;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Equip;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Item;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
+using BlockyHeroesBackend.Domain.Entities.Banner;
 using BlockyHeroesBackend.Domain.Entities.Character;
 using BlockyHeroesBackend.Domain.Entities.Equip;
 using BlockyHeroesBackend.Domain.Entities.Item;
@@ -16,6 +18,7 @@ namespace BlockyHeroesBackend.Seeder;
 
 public class Application
 {
+    private readonly IGachaBannerCommandRepository _gachaBannerCommandRepository;
     private readonly IEquipCommandRepository _equipCommandRepository;
     private readonly IEquipQueryRepository _equipQueryRepository;
     private readonly IItemCommandRepository _itemCommandRepository;
@@ -33,6 +36,7 @@ public class Application
     private List<User> _users = new List<User>();
 
     public Application(
+        IGachaBannerCommandRepository gachaBannerCommandRepository,
         IEquipCommandRepository equipCommandRepository,
         IEquipQueryRepository equipQueryRepository,
         IItemCommandRepository itemCommandRepository,
@@ -46,6 +50,8 @@ public class Application
         IUnitOfWork unitOfWork, 
         IUserSecurityService userSecurityService)
     {
+        _gachaBannerCommandRepository = gachaBannerCommandRepository;
+
         _equipCommandRepository = equipCommandRepository;
         _equipQueryRepository = equipQueryRepository;
         _itemCommandRepository = itemCommandRepository;
@@ -87,6 +93,9 @@ public class Application
 
         Console.WriteLine("Creating random characters to users");
         await GenerateRandomUserCharacters();
+
+        Console.WriteLine("Creating gacha banners");
+        await GenerateGachaBanners();
 
         Console.WriteLine("Sample data loaded successfully!");
     }
@@ -276,6 +285,34 @@ public class Application
 
                 await _userCharacterCommandRepository.InsertAsync(userCharacter);
             }
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    private async Task GenerateGachaBanners()
+    {
+        var items = await _itemQueryRepository.GetAllAsync();
+        string data = File.ReadAllText("Samples/gachabanner.json");
+        var gachaBanners = JsonSerializer.Deserialize<List<GachaBanner>>(data);
+
+        foreach (var banner in gachaBanners)
+        {
+            foreach (var rate in banner.DropRates)
+            {
+                rate.Id = BannerDropRateId.CreateBannerDropRateId();
+            }
+
+            foreach (var gachaCurrency in banner.GachaBannerCurrencies)
+            {
+                gachaCurrency.Id = GachaBannerCurrencyId.CreateGachaBannerCurrencyId();
+                gachaCurrency.Item = items.First(item => item.Name.ToLower() == gachaCurrency.Item.Name.ToLower());
+                gachaCurrency.ItemId = gachaCurrency.Item.Id;
+            }
+
+            banner.Id = GachaBannerId.CreateBannerId();
+
+            await _gachaBannerCommandRepository.InsertAsync(banner);
         }
 
         await _unitOfWork.SaveChangesAsync();

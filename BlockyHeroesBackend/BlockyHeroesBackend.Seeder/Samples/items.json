@@ -1,5 +1,13 @@
 [
   {
+    "Name": "Coins",
+    "Description": "They will make you rich!",
+    "Type": {
+      "Id": 2,
+      "Name": "Static"
+    }
+  },
+  {
     "Name": "Apples",
     "Description": "Found in the wild, used to enhance characters",
     "Type": {
