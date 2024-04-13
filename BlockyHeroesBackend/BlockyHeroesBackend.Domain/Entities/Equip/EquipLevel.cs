@@ -21,4 +21,5 @@ public class EquipLevel
     public Equip Equip { get; set; }
 
     public ICollection<UserEquipment> UserEquipment { get; set; }
+    public ICollection<EquipLevelRequirement> EquipLevelRequirements { get; set; }
 }

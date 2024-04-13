@@ -17,6 +17,7 @@ public class BlockyHeroesDbContext : DbContext, IBlockyHeroesDbContext
 
     public DbSet<Equip> Equips { get; set; }
     public DbSet<EquipLevel> EquipLevels { get; set; }
+    public DbSet<EquipLevelRequirement> EquipLevelRequirements { get; set; }
 
     public DbSet<Character> Characters { get; set; }
     public DbSet<CharacterLevel> CharacterLevels { get; set; }

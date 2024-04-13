@@ -244,6 +244,29 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.ToTable("EquipLevels");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevelRequirement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EquipLevelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquipLevelId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("EquipLevelRequirements");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Item.Item", b =>
                 {
                     b.Property<Guid>("Id")
@@ -478,6 +501,25 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                     b.Navigation("Equip");
                 });
 
+            modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevelRequirement", b =>
+                {
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", "EquipLevel")
+                        .WithMany("EquipLevelRequirements")
+                        .HasForeignKey("EquipLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlockyHeroesBackend.Domain.Entities.Item.Item", "Item")
+                        .WithMany("EquipLevelRequirements")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EquipLevel");
+
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.User.UserCharacter", b =>
                 {
                     b.HasOne("BlockyHeroesBackend.Domain.Entities.Character.CharacterLevel", "CharacterLevel")
@@ -579,12 +621,16 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Equip.EquipLevel", b =>
                 {
+                    b.Navigation("EquipLevelRequirements");
+
                     b.Navigation("UserEquipment");
                 });
 
             modelBuilder.Entity("BlockyHeroesBackend.Domain.Entities.Item.Item", b =>
                 {
                     b.Navigation("CharacterLevelRequirements");
+
+                    b.Navigation("EquipLevelRequirements");
 
                     b.Navigation("GachaBannerCurrencies");
 

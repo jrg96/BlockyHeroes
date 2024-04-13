@@ -259,6 +259,32 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EquipLevelRequirements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    EquipLevelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EquipLevelRequirements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EquipLevelRequirements_EquipLevels_EquipLevelId",
+                        column: x => x.EquipLevelId,
+                        principalTable: "EquipLevels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EquipLevelRequirements_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserEquipments",
                 columns: table => new
                 {
@@ -339,6 +365,16 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
                 name: "IX_CharacterLevels_CharacterId",
                 table: "CharacterLevels",
                 column: "CharacterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquipLevelRequirements_EquipLevelId",
+                table: "EquipLevelRequirements",
+                column: "EquipLevelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquipLevelRequirements_ItemId",
+                table: "EquipLevelRequirements",
+                column: "ItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EquipLevels_EquipId",
@@ -424,6 +460,9 @@ namespace BlockyHeroesBackend.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "CharacterLevelRequirements");
+
+            migrationBuilder.DropTable(
+                name: "EquipLevelRequirements");
 
             migrationBuilder.DropTable(
                 name: "GachaBannerCharacter");
