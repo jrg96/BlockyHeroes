@@ -1,24 +1,24 @@
 ﻿using BlockyHeroesBackend.Api.Middleware.Authorization;
-using BlockyHeroesBackend.Application.Entities.UserCharacter.Commands;
+using BlockyHeroesBackend.Application.Entities.Banner.Commands;
 using BlockyHeroesBackend.Application.Services;
 using BlockyHeroesBackend.Domain.Entities.User;
 using BlockyHeroesBackend.Presentation.Common;
-using BlockyHeroesBackend.Presentation.RequestResponse.UserCharacter;
+using BlockyHeroesBackend.Presentation.RequestResponse.Banner;
 using Carter;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlockyHeroesBackend.Api.Modules;
 
-public class UserCharacterModule : BaseModule, ICarterModule
+public class BannerModule : BaseModule, ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        RouteGroupBuilder userCharGroup = CreateApiVersions(app, "user/character");
-        var v1 = userCharGroup.MapGroup("").HasApiVersion(1);
+        RouteGroupBuilder bannerGroup = CreateApiVersions(app, "banner");
+        var v1 = bannerGroup.MapGroup("").HasApiVersion(1);
 
-        v1.MapPost("/upgrade", UpgradeUserCharacter)
-            .Accepts<UpgradeUserCharacterRequest>("application/json")
+        v1.MapPost("/pull", BannerPull)
+            .Accepts<BannerPullRequest>("application/json")
             .Produces<TaskResult>(StatusCodes.Status400BadRequest)
             .Produces<TaskResult>(StatusCodes.Status403Forbidden)
             .Produces<TaskResult>(StatusCodes.Status200OK)
@@ -28,21 +28,21 @@ public class UserCharacterModule : BaseModule, ICarterModule
     /*
      * Endpoint Handlers
      */
-    private async Task<IResult> UpgradeUserCharacter(IMediator mediator, IJwtTokenService jwtTokenService, HttpContext context, [FromBody] UpgradeUserCharacterRequest request)
+    private async Task<IResult> BannerPull(IMediator mediator, IJwtTokenService jwtTokenService, HttpContext context, [FromBody] BannerPullRequest request)
     {
         User user = (User)context.Items["User"];
 
-        var result = await mediator.Send(new UpgradeUserCharacterCommand(
+        var result = await mediator.Send(new GachaPullCommand(
             user.Id.Value,
-            request.UserCharacterId,
-            request.LevelsToUpgrade));
+            request.BannerId,
+            request.Times));
 
         if (!result.Success)
         {
             return TypedResults.BadRequest(new TaskResult()
             {
                 Success = false,
-                Errors = result.Errors.Select(e => e.Message)
+                Errors = result.Errors.Select(error => error.Message)
             });
         }
 

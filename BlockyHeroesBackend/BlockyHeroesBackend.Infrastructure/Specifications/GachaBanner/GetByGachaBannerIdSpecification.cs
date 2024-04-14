@@ -8,6 +8,7 @@ public class GetByGachaBannerIdSpecification : Specification<Domain.Entities.Ban
     public GetByGachaBannerIdSpecification(GachaBannerId gachaBannerId)
     {
         Query
+            .Include(gachaBanner => gachaBanner.DropRates)
             .Include(gachaBanner => gachaBanner.GachaBannerCurrencies)
                 .ThenInclude(item => item.Item)
             .Include(gachaBanner => gachaBanner.GachaBannerCharacters)

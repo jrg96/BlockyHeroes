@@ -11,7 +11,9 @@ public class RandomWeightedPicker<T> where T : IWeighted
     public RandomWeightedPicker(IEnumerable<T> items, Dictionary<ItemRarity, float> rarityProbabilities)
     {
         _items = items;
-        _rarityProbabilities = rarityProbabilities;
+        _rarityProbabilities = rarityProbabilities
+            .OrderByDescending(pair => pair.Value)
+            .ToDictionary();
     }
 
     public T PickItem()
@@ -39,7 +41,7 @@ public class RandomWeightedPicker<T> where T : IWeighted
 
         // Step 2: select a random pick
         int selectedValue = _random.Next(totalWeight);
-        return _items.First(i => (selectedValue -= i.Weight) < 0);
+        return selectedItems.First(i => (selectedValue -= i.Weight) < 0);
     }
 
     public IEnumerable<T> PickItems(int amount)

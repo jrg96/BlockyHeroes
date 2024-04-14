@@ -38,7 +38,7 @@ public class GachaPullCommandHandler : IOperationHandler<GachaPullCommand, IEnum
 
         // Step 1: Check if Banner is still active
         GachaBanner? bannerToPullFrom = await _gachaBannerQueryRepository.GetByIdAsync(gachaBannerId);
-        if (!(bannerToPullFrom?.StartDate >= DateTime.Now && bannerToPullFrom?.EndDate <= DateTime.Now))
+        if (!(bannerToPullFrom?.StartDate <= DateTime.Now && bannerToPullFrom?.EndDate >= DateTime.Now))
         {
             return OperationResult<IEnumerable<Domain.Entities.User.UserCharacter>>.GenericInvalidOperation;
         }
