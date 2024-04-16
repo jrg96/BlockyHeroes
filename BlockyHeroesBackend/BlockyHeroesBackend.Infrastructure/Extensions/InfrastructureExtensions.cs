@@ -17,6 +17,7 @@ public static class InfrastructureExtensions
         // Adding Infrastructure services
         service.AddScoped<IUserSecurityService, UserSecurityService>();
         service.AddScoped<IJwtTokenService, JwtTokenService>();
+        service.AddSingleton<IGachaBannerCacheService, GachaBannerCacheService>();
 
         // Adding Repositories
         service.AddScoped<IUnitOfWork, UnitOfWork>();

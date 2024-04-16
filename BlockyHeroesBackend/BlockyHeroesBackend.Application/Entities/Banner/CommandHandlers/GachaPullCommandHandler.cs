@@ -1,32 +1,47 @@
 ﻿using BlockyHeroesBackend.Application.Abstractions;
 using BlockyHeroesBackend.Application.Common;
 using BlockyHeroesBackend.Application.Entities.Banner.Commands;
+using BlockyHeroesBackend.Application.Services;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Banner;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Banner.RandomWeightedPicker;
-using BlockyHeroesBackend.Domain.Common.ValueObjects.Character;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.Common;
 using BlockyHeroesBackend.Domain.Common.ValueObjects.User;
 using BlockyHeroesBackend.Domain.Entities.Banner;
-using BlockyHeroesBackend.Domain.Entities.Character;
 using BlockyHeroesBackend.Domain.Entities.User;
+using BlockyHeroesBackend.Domain.Repositories;
+using BlockyHeroesBackend.Domain.Repositories.Command;
 using BlockyHeroesBackend.Domain.Repositories.Query;
 
 namespace BlockyHeroesBackend.Application.Entities.Banner.CommandHandlers;
 
 public class GachaPullCommandHandler : IOperationHandler<GachaPullCommand, IEnumerable<Domain.Entities.User.UserCharacter>>
 {
+    private readonly IGachaBannerCacheService _gachaBannerCacheService;
+    private readonly IUnitOfWork _unitOfWork;
+
     private readonly IGachaBannerQueryRepository _gachaBannerQueryRepository;
-    private readonly IUserQueryRepository _userQueryRepository;
     private readonly ICharacterLevelQueryRepository _characterLevelQueryRepository;
+    private readonly IUserQueryRepository _userQueryRepository;
+    private readonly IUserItemCommandRepository _userItemCommandRepository;
+    private readonly IUserCharacterCommandRepository _userCharacterCommandRepository;
 
     public GachaPullCommandHandler(
+        IGachaBannerCacheService gachaBannerCacheService,
+        IUnitOfWork unitOfWork,
         IGachaBannerQueryRepository gachaBannerQueryRepository, 
+        ICharacterLevelQueryRepository characterLevelQueryRepository,
         IUserQueryRepository userQueryRepository,
-        ICharacterLevelQueryRepository characterLevelQueryRepository)
+        IUserItemCommandRepository userItemCommandRepository,
+        IUserCharacterCommandRepository userCharacterCommandRepository)
     {
+        _unitOfWork = unitOfWork;
+        _gachaBannerCacheService = gachaBannerCacheService;
+
         _gachaBannerQueryRepository = gachaBannerQueryRepository;
-        _userQueryRepository = userQueryRepository;
         _characterLevelQueryRepository = characterLevelQueryRepository;
+        _userQueryRepository = userQueryRepository;
+        _userItemCommandRepository = userItemCommandRepository;
+        _userCharacterCommandRepository = userCharacterCommandRepository;
     }
 
     public GachaType GachaType { get; private set; }
@@ -64,32 +79,67 @@ public class GachaPullCommandHandler : IOperationHandler<GachaPullCommand, IEnum
         // Step 3: After verifying banner and resource availability
         // Proceed to do gacha pull
 
-        // Build consolidated list of possible characters
-        // By default, permanent pool has a weight = 1 to appear
-        IEnumerable<WeightedCharacter> selectionPool = WeightedCharacter
-            .CreateWeightedCharacters(
-                await _characterLevelQueryRepository.GetByCharacterLevelAndGachaTypeAsync(1, GachaType.PermanentPool), 
-                1)
-            .Union(bannerToPullFrom.GachaBannerCharacters
-                .Select(exclusiveCharacter => 
-                    WeightedCharacter.CreateWeightedCharacter(
-                            exclusiveCharacter.CharacterLevelId,
-                            exclusiveCharacter.CharacterLevel.Character.Rarity,
-                            (int)exclusiveCharacter.RateUp)));
+        RandomWeightedPicker<WeightedCharacter> picker;
 
-        Dictionary<ItemRarity, float> rarityDropRates = bannerToPullFrom
-            .DropRates
-            .ToList()
-            .ToDictionary(dropRate => dropRate.Rarity, dropRate => dropRate.DropRate);
+        if (_gachaBannerCacheService.IsBannerLoaded(bannerToPullFrom.Id))
+        {
+            picker = _gachaBannerCacheService.GetBanner(bannerToPullFrom.Id);
+        }
+        else
+        {
+            // Build consolidated list of possible characters
+            // By default, permanent pool has a weight = 1 to appear
+            IEnumerable<WeightedCharacter> selectionPool = WeightedCharacter
+                .CreateWeightedCharacters(
+                    await _characterLevelQueryRepository.GetByCharacterLevelAndGachaTypeAsync(1, GachaType.PermanentPool),
+                    1)
+                .Union(bannerToPullFrom.GachaBannerCharacters
+                    .Select(exclusiveCharacter =>
+                        WeightedCharacter.CreateWeightedCharacter(
+                                exclusiveCharacter.CharacterLevelId,
+                                exclusiveCharacter.CharacterLevel.Character.Rarity,
+                                (int)exclusiveCharacter.RateUp)));
 
-        RandomWeightedPicker<WeightedCharacter> picker = 
-            new RandomWeightedPicker<WeightedCharacter>(
-                    selectionPool, 
-                    rarityDropRates);
+            Dictionary<ItemRarity, float> rarityDropRates = bannerToPullFrom
+                .DropRates
+                .ToList()
+                .ToDictionary(dropRate => dropRate.Rarity, dropRate => dropRate.DropRate);
+
+            picker =
+                new RandomWeightedPicker<WeightedCharacter>(
+                        selectionPool,
+                        rarityDropRates);
+
+            _gachaBannerCacheService.SaveBanner(bannerToPullFrom.Id, picker);
+        }
 
         // Perform Gacha Pull
         IEnumerable<WeightedCharacter> pulls = picker.PickItems(request.NumberOfPulls);
 
+        // Step 4: Remove Resources, and save new characters to user
+        foreach(var userResource in userGachaResources)
+        {
+            userResource.Quantity -= bannerToPullFrom
+                    .GachaBannerCurrencies
+                    .First(currency => currency.ItemId == userResource.ItemId)
+                    .QuantityPerPull * request.NumberOfPulls;
+
+            await _userItemCommandRepository.UpdateAsync(userResource);
+        }
+
+        foreach(var character in pulls)
+        {
+            Domain.Entities.User.UserCharacter newCharacter = new Domain.Entities.User.UserCharacter()
+            {
+                Id = UserCharacterId.CreateUserCharacterId(),
+                UserId = user.Id,
+                CharacterLevelId = character.CharacterLevelId
+            };
+
+            await _userCharacterCommandRepository.InsertAsync(newCharacter);
+        }
+
+        await _unitOfWork.SaveChangesAsync();
         return OperationResult<IEnumerable<Domain.Entities.User.UserCharacter>>.GenericSuccess;
     }
 }
